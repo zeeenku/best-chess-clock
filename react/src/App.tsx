@@ -61,7 +61,7 @@ function App() {
 
 
     {
-      name : "1h30min",
+      name : "1h30m",
       time : 90,
     },
 
@@ -71,6 +71,11 @@ function App() {
     },
   ];
 
+
+  const getBgColor = (id : number) => {
+    if(id == 1) return "amber";
+    return "lime"
+  }
 
   const addiTimeRecom : TimeRecom[] = [
     {
@@ -133,6 +138,11 @@ function App() {
     }
 
 
+    if(isNaN(startTime)){
+      startTime = 1; 
+    }
+
+
     const newPlayers = players.map((el)=>{
       if(el.id == playerId){
         el.startTime = startTime;
@@ -152,6 +162,9 @@ function App() {
       return;
     }
 
+    if(isNaN(addiTime)){
+      addiTime = 0; 
+    }
 
     const newPlayers = players.map((el)=>{
       if(el.id == playerId){
@@ -168,7 +181,7 @@ function App() {
     <h1>hello there</h1>
       <AlertDialog  open={isDialogOpen}>
 
-      <AlertDialogContent className="bg-slate-900 max-h-[90vh] overflow-y-auto">
+      <AlertDialogContent className="bg-slate-900 max-h-[90vh] overflow-x-hidden overflow-y-auto">
         <AlertDialogHeader>
           <AlertDialogTitle className="capitalize text-center">The best chess clock</AlertDialogTitle>
           <AlertDialogDescription>
@@ -176,7 +189,7 @@ function App() {
           </AlertDialogDescription>
         </AlertDialogHeader>
 
-        <div className="flex my-4 items-center justify-center space-x-2">
+        <div className="flex items-center justify-center space-x-2">
               <Switch onCheckedChange={(val)=>{setSamePlayTime(val)}} checked={isSamePlayTime} id="same-play-time-mode" />
               <Label htmlFor="same-play-time-mode" className="text-gray-100">same playtime</Label>
         </div>
@@ -186,53 +199,74 @@ function App() {
       
       {
           (isSamePlayTime ? [players[0]] : players).map(player =>
-          <div key={`player-${player.id}`} className="flex flex-col gap-y-2 my-4">
+          <div key={`player-${player.id}`} >
             {
               !isSamePlayTime ? (
                 <>
-                  <h2>player {player.id}</h2>
+                  <h2 className="font-semibold text-md mt-6 text-center">player {player.id}</h2>
                 </>
               ) : (<></>)
             }
             
-            <hr className="block"/>
+
             
-            <div className="flex w-full justify-center items-center space-x-2">
+            <div className="flex gap-x-2 mb-4">
+            <div className="w-1/2">
+            <Label htmlFor="start-time" className="text-center mx-auto my-4 block text-gray-100 w-28">start time(m)</Label>
+            <div className="flex max-w-full my-2 w-full flex-wrap justify-center items-center gap-1">
               {
                 startTimeRecom.map(el=>
                   <Button 
-                  className={`${el.time == player.startTime ? "bg-amber-950" : "bg-amber-900" }  hover:bg-amber-950 w-full`} 
+                  size="sm"
+                  className={`${el.time == player.startTime ? "bg-"+(getBgColor(player.id))+"-950" : "bg-"+(getBgColor(player.id))+"-900" }  hover:bg-${getBgColor(player.id)}-950 text-xs w-12 h-8`} 
                   onClick={()=>setPlayTime(player.id, el.time)}>{el.name}</Button>
                 )
               }
       
               </div>
-              <div className="flex w-full items-center space-x-2">
-                <Label htmlFor="start-time" className="text-gray-100 w-28">start time</Label>
-                <Input onChange={()=>{}} type="start-time" value={player.startTime} className="bg-slate-100 text-slate-900" placeholder="Minutes" />
-                <Button className="bg-amber-900 hover:bg-amber-950" onClick={()=>setPlayTime(player.id, player.startTime+1)}>+</Button>
-                <Button className="bg-amber-900 hover:bg-amber-950" onClick={()=>setPlayTime(player.id, player.startTime-1)}>-</Button>
+              <div className="flex w-10/12 mx-auto flex-nowrap items-center space-x-2">
+                
+                <div className="flex justify-center gap-x-1 items-center bg-slate-100 rounded-md p-1">
+                  <Input onChange={(e)=>setPlayTime(player.id, parseInt(e.target.value) )} type="start-time" value={player.startTime} 
+                  className=" border-none shadow-none h-6 focus:shadow-none text-slate-900" placeholder="Minutes" />
+                  <Button size="sm" className="bg-lime-900 h-6 hover:bg-lime-950" onClick={()=>setPlayTime(player.id, player.startTime+1)}>+</Button>
+                  <Button size="sm" className="bg-amber-900 h-6 hover:bg-amber-950" onClick={()=>setPlayTime(player.id, player.startTime-1)}>-</Button>
+                </div>
+
+
+
               </div>
       
-      
+              </div>
 
-              <div className="flex w-full justify-center items-center space-x-2">
-              {
+<div className="w-1/2">
+<Label htmlFor="start-time" className="text-center mx-auto my-4 block text-gray-100 w-28">Addi. time(s)</Label>
+
+<div className="flex max-w-full w-full flex-wrap justify-center items-center gap-1">
+{
                 addiTimeRecom.map(el=>
                   <Button 
-                  className={`${el.time == player.addiTime ? "bg-amber-950" : "bg-amber-900" }  hover:bg-amber-950 w-full`} 
+                  className={`${el.time == player.addiTime ? "bg-amber-950" : "bg-amber-900" }  hover:bg-amber-950 text-xs w-12 h-8`} 
                   onClick={()=>setAddiTime(player.id, el.time)}>{el.name}</Button>
                 )
               }
-      
+
               </div>
-              <div className="flex w-full items-center space-x-2">
-                <Label htmlFor="addit-time" className="text-gray-100 w-28">addi. time</Label>
-                <Input onChange={()=>{}} value={player.addiTime} type="addit-time" className="bg-slate-100 text-slate-900" placeholder="Seconds" />
-                <Button className="bg-amber-900 hover:bg-amber-950" onClick={()=>setAddiTime(player.id, player.addiTime+1)}>+</Button>
-                <Button className="bg-amber-900 hover:bg-amber-950" onClick={()=>setAddiTime(player.id, player.addiTime-1)}>-</Button>
+              <div className="flex w-10/12 mx-auto flex-nowrap items-center space-x-2">
+
+              <div className="flex w- my-2 justify-center gap-x-1 items-center bg-slate-100 rounded-md p-1">
+                  <Input onChange={(e)=>setAddiTime(player.id, parseInt(e.target.value) )} type="start-time" value={player.addiTime} 
+                  className=" border-none shadow-none h-6 focus:shadow-none text-slate-900" placeholder="Seconds" />
+                  <Button size="sm" className="bg-amber-900 h-6 hover:bg-amber-950" onClick={()=>setAddiTime(player.id, player.addiTime+1)}>+</Button>
+                  <Button size="sm" className="bg-amber-900 h-6 hover:bg-amber-950" onClick={()=>setAddiTime(player.id, player.addiTime-1)}>-</Button>
+                </div>
+                </div>
               </div>
               </div>
+              <hr className="block"/>
+              </div>
+
+              
         )
       }
 
