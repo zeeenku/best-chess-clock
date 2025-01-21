@@ -72,10 +72,21 @@ function App() {
   ];
 
 
-  const getBgColor = (id : number) => {
-    if(id == 1) return "amber";
-    return "lime"
+  const getBtnBgColor = (id : number) => {
+    if(id == 1) return "bg-amber-900";
+    return "bg-lime-900"
   }
+
+  const getBtnFocusBgColor = (id : number) => {
+    if(id == 1) return "bg-amber-950";
+    return "bg-lime-950"
+  }
+
+  const getBtnHoverBgColor = (id : number) => {
+    if(id == 1) return "hover:bg-amber-950";
+    return "hover:bg-lime-950"
+  }
+
 
   const addiTimeRecom : TimeRecom[] = [
     {
@@ -203,7 +214,7 @@ function App() {
             {
               !isSamePlayTime ? (
                 <>
-                  <h2 className="font-semibold text-md mt-6 text-center">player {player.id}</h2>
+                  <h2 className="font-semibold text-md mt-6 text-center">Player {player.id}</h2>
                 </>
               ) : (<></>)
             }
@@ -218,7 +229,7 @@ function App() {
                 startTimeRecom.map(el=>
                   <Button 
                   size="sm"
-                  className={`${el.time == player.startTime ? "bg-"+(getBgColor(player.id))+"-950" : "bg-"+(getBgColor(player.id))+"-900" }  hover:bg-${getBgColor(player.id)}-950 text-xs w-12 h-8`} 
+                  className={`${el.time == player.startTime ? getBtnFocusBgColor(player.id) : getBtnBgColor(player.id) }  ${getBtnHoverBgColor(player.id)} text-xs w-12 h-8`} 
                   onClick={()=>setPlayTime(player.id, el.time)}>{el.name}</Button>
                 )
               }
@@ -229,8 +240,8 @@ function App() {
                 <div className="flex justify-center gap-x-1 items-center bg-slate-100 rounded-md p-1">
                   <Input onChange={(e)=>setPlayTime(player.id, parseInt(e.target.value) )} type="start-time" value={player.startTime} 
                   className=" border-none shadow-none h-6 focus:shadow-none text-slate-900" placeholder="Minutes" />
-                  <Button size="sm" className="bg-lime-900 h-6 hover:bg-lime-950" onClick={()=>setPlayTime(player.id, player.startTime+1)}>+</Button>
-                  <Button size="sm" className="bg-amber-900 h-6 hover:bg-amber-950" onClick={()=>setPlayTime(player.id, player.startTime-1)}>-</Button>
+                  <Button size="sm" className={`${getBtnBgColor(player.id)} ${getBtnHoverBgColor(player.id)} h-6`} onClick={()=>setPlayTime(player.id, player.startTime+1)}>+</Button>
+                  <Button size="sm" className={`${getBtnBgColor(player.id)} ${getBtnHoverBgColor(player.id)} h-6`} onClick={()=>setPlayTime(player.id, player.startTime-1)}>-</Button>
                 </div>
 
 
@@ -246,7 +257,7 @@ function App() {
 {
                 addiTimeRecom.map(el=>
                   <Button 
-                  className={`${el.time == player.addiTime ? "bg-amber-950" : "bg-amber-900" }  hover:bg-amber-950 text-xs w-12 h-8`} 
+                  className={`${el.time == player.addiTime ? getBtnFocusBgColor(player.id) : getBtnBgColor(player.id) }  ${getBtnHoverBgColor(player.id)} text-xs w-12 h-8`} 
                   onClick={()=>setAddiTime(player.id, el.time)}>{el.name}</Button>
                 )
               }
@@ -257,8 +268,8 @@ function App() {
               <div className="flex w- my-2 justify-center gap-x-1 items-center bg-slate-100 rounded-md p-1">
                   <Input onChange={(e)=>setAddiTime(player.id, parseInt(e.target.value) )} type="start-time" value={player.addiTime} 
                   className=" border-none shadow-none h-6 focus:shadow-none text-slate-900" placeholder="Seconds" />
-                  <Button size="sm" className="bg-amber-900 h-6 hover:bg-amber-950" onClick={()=>setAddiTime(player.id, player.addiTime+1)}>+</Button>
-                  <Button size="sm" className="bg-amber-900 h-6 hover:bg-amber-950" onClick={()=>setAddiTime(player.id, player.addiTime-1)}>-</Button>
+                  <Button size="sm" className={`${getBtnBgColor(player.id)} ${getBtnHoverBgColor(player.id)} h-6`} onClick={()=>setAddiTime(player.id, player.addiTime+1)}>+</Button>
+                  <Button size="sm" className={`${getBtnBgColor(player.id)} ${getBtnHoverBgColor(player.id)} h-6`} onClick={()=>setAddiTime(player.id, player.addiTime-1)}>-</Button>
                 </div>
                 </div>
               </div>
@@ -274,6 +285,10 @@ function App() {
         <AlertDialogFooter>
             <AlertDialogAction className="bg-amber-900 w-full hover:bg-amber-950 capitalize">start game</AlertDialogAction>
         </AlertDialogFooter>
+
+        <div className="text-xs">
+          Made by Zenku (Enajjachi Zakariaa)
+        </div>
       </AlertDialogContent>
     </AlertDialog>
     </>
