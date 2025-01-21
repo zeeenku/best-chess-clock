@@ -195,8 +195,7 @@ function App() {
       <AlertDialogContent className="bg-slate-900 max-h-[90vh] overflow-x-hidden overflow-y-auto">
         <AlertDialogHeader>
           <AlertDialogTitle className="capitalize text-center">The best chess clock</AlertDialogTitle>
-          <AlertDialogDescription>
-            
+          <AlertDialogDescription className="text-gray-300 text-center">
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -282,12 +281,20 @@ function App() {
       }
 
         </div>
-        <AlertDialogFooter>
-            <AlertDialogAction className="bg-amber-900 w-full hover:bg-amber-950 capitalize">start game</AlertDialogAction>
-        </AlertDialogFooter>
 
-        <div className="text-xs">
-          Made by Zenku (Enajjachi Zakariaa)
+        <div>
+            <AlertDialogAction className="bg-amber-900 w-full hover:bg-amber-950 capitalize my-0">start game</AlertDialogAction>
+
+
+        <div className="flex my-2 gap-x-2">
+          <Button className="w-full bg-lime-900 hover:bg-lime-950">Download as App</Button>
+          <Button className="w-full bg-lime-900 hover:bg-lime-950">Share With Friends</Button>
+          </div>
+        <div className="text-xs flex gap-2 justify-between">
+        <span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-amber-700">Zenku</a> (Enajjachi Zakariaa).</span>
+
+          <span className="text-gray-300 text-center">You can read code (<a href="https://github.com/zeeenku/best-chess-clock" className="underline text-amber-700">repo</a>)</span>
+        </div>
         </div>
       </AlertDialogContent>
     </AlertDialog>
