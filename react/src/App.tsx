@@ -8,6 +8,18 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
+
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
@@ -288,12 +300,25 @@ function App() {
 
         <div className="flex my-2 gap-x-2">
           <Button className="w-full bg-lime-900 hover:bg-lime-950">Download as App</Button>
-          <Button className="w-full bg-lime-900 hover:bg-lime-950">Share With Friends</Button>
+          <Dialog>
+              <DialogTrigger>          
+                <Button className="w-full bg-lime-900 hover:bg-lime-950">Share With Friends</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Are you absolutely sure?</DialogTitle>
+                  <DialogDescription>
+                    This action cannot be undone. This will permanently delete your account
+                    and remove your data from our servers.
+                  </DialogDescription>
+                </DialogHeader>
+              </DialogContent>
+          </Dialog>
           </div>
-        <div className="text-xs flex gap-2 justify-between">
+        <div className="text-xs flex gap-1 justify-center">
         <span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-amber-700">Zenku</a> (Enajjachi Zakariaa).</span>
 
-          <span className="text-gray-300 text-center">You can read code (<a href="https://github.com/zeeenku/best-chess-clock" className="underline text-amber-700">repo</a>)</span>
+          <span className="text-gray-300 text-center">You can read the code (<a href="https://github.com/zeeenku/best-chess-clock" className="underline text-amber-700">repo</a>)</span>
         </div>
         </div>
       </AlertDialogContent>
