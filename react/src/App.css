@@ -6,3 +6,22 @@ body{
     font-weight: 500;
     font-style: normal;
 }
+
+.makeStyles-iconContainer-3{
+  @apply flex justify-center gap-x-3 items-center;
+}
+
+.makeStyles-container-1{
+  width:fit-content !important;
+  max-width:100vw !important;
+  margin:0px auto !important;
+}
+.makeStyles-iconContainer-3 button{
+  margin:5px 0px !important;
+  flex:none !important;
+}
+
+
+.makeStyles-copyIcon-7{
+  @apply text-amber-700 !important;
+}

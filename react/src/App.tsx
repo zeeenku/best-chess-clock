@@ -4,10 +4,12 @@ import {
   AlertDialogAction,
   AlertDialogContent,
   AlertDialogDescription,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+
+
+import {ShareSocial} from 'react-share-social' 
 
 
 import {
@@ -40,6 +42,7 @@ type TimeRecom = {
 };
 
 function App() {
+  const url = window.location.href;
   const [isDialogOpen, setDialogOpen] = useState(true);
   const [isSamePlayTime, setSamePlayTime] = useState(true);
   const startTime = 10; const addiTime = 5;
@@ -304,12 +307,33 @@ function App() {
               <DialogTrigger>          
                 <Button className="w-full bg-lime-900 hover:bg-lime-950">Share With Friends</Button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="bg-slate-900">
                 <DialogHeader>
-                  <DialogTitle>Are you absolutely sure?</DialogTitle>
+                  <DialogTitle>Thanks for sharing</DialogTitle>
                   <DialogDescription>
-                    This action cannot be undone. This will permanently delete your account
-                    and remove your data from our servers.
+                  <ShareSocial 
+                          url={url}
+
+                          style={{
+                            root: {
+                              backgroundColor: "transparent",
+                              fontFamily : "\"Arvo\", serif"
+                            },
+
+                            title : {
+                              textAlign : "center",
+                              color : "#e2e8f0",
+                              fontSize: "1rem",
+                              fontFamily : "\"Arvo\", serif"
+                            },
+                            copyContainer: {
+                              fontFamily : "\"Arvo\", serif",
+                              transform: "scale(0.8)"
+                            }
+                          }}
+
+                          socialTypes={["whatsapp","facebook","twitter","reddit","linkedin","instapaper"]}
+                        />
                   </DialogDescription>
                 </DialogHeader>
               </DialogContent>
