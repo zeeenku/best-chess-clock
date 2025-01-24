@@ -8,7 +8,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 
-
+import {addiTimeRecom, startTimeRecom} from "@/recoms"
 
 
 import {ShareSocial} from 'react-share-social' 
@@ -30,7 +30,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 import './App.css'
-import { Player } from '@/types'
+import Clock from './Clock'
 
 
 
@@ -144,6 +144,9 @@ function App() {
   return (
     <>
 
+      {
+        showClock ? <Clock players={players} /> : <></>
+      }
       <AlertDialog  open={isDialogOpen}>
 
       <AlertDialogContent className="bg-slate-900 max-h-[90vh] overflow-x-hidden overflow-y-auto">
@@ -179,8 +182,9 @@ function App() {
             <Label htmlFor="start-time" className="text-center mx-auto my-4 block text-gray-100 w-28">start time(m)</Label>
             <div className="flex max-w-full my-2 w-full flex-wrap justify-center items-center gap-1">
               {
-                startTimeRecom.map(el=>
+                startTimeRecom.map( (el,index)=>
                   <Button 
+                  key={index}
                   size="sm"
                   className={`${el.time == player.startTime ? getBtnFocusBgColor(player.id) : getBtnBgColor(player.id) }  ${getBtnHoverBgColor(player.id)} text-xs w-12 h-8`} 
                   onClick={()=>setPlayTime(player.id, el.time)}>{el.name}</Button>
@@ -208,8 +212,9 @@ function App() {
 
 <div className="flex max-w-full w-full flex-wrap justify-center items-center gap-1">
 {
-                addiTimeRecom.map(el=>
+                addiTimeRecom.map((el,index)=>
                   <Button 
+                key={index}
                   className={`${el.time == player.addiTime ? getBtnFocusBgColor(player.id) : getBtnBgColor(player.id) }  ${getBtnHoverBgColor(player.id)} text-xs w-12 h-8`} 
                   onClick={()=>setAddiTime(player.id, el.time)}>{el.name}</Button>
                 )
@@ -237,16 +242,18 @@ function App() {
         </div>
 
         <div>
-            <AlertDialogAction className="bg-amber-900 w-full hover:bg-amber-950 capitalize my-0">start game</AlertDialogAction>
+            <AlertDialogAction
+            onClick={()=>startGame()}
+            className="bg-amber-900 w-full hover:bg-amber-950 capitalize my-0">start game</AlertDialogAction>
 
 
         <div className="flex my-2 gap-x-2">
           <div className="w-full">
-          <Button onClick={()=>document?.getElementById('install-dialog')?.show()} className="w-full bg-lime-900 hover:bg-lime-950">Download as App</Button>
+          <Button onClick={()=>{}} className="w-full bg-lime-900 hover:bg-lime-950">Download as App</Button>
           </div>
           <div className="w-full">
           <Dialog>
-              <DialogTrigger className="w-full">          
+              <DialogTrigger asChild className="w-full">          
                 <Button className="w-full bg-lime-900 hover:bg-lime-950">Share With Friends</Button>
               </DialogTrigger>
               <DialogContent className="bg-slate-900">
