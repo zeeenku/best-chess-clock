@@ -3,9 +3,9 @@ import { FC } from "react";
 
 const Clock: FC<ClockProps> = ({ players }) => {
   return (
-    <div className="w-screen h-screen flex">
+    <div className="w-screen h-[80vh] mt-[10vh] flex">
       {players.map((player, index) => (
-        <div key={index} className={`h-full w-6/12`}>
+        <div key={index} className={`h-full w-6/12 p-5`}>
         <button className="clock-button w-full h-full time"> 
           {player.startTime}
         </button>
