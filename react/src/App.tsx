@@ -131,7 +131,9 @@ function App() {
   const startGame = () => {
     if(isSamePlayTime){
       // if same then change second player data as the first one
+      const id = players[1].id;
       players[1] = players[0];
+      players[1].id = id;
     }
 
     setDialogOpen(false);
