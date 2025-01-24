@@ -9,6 +9,6 @@ export type Player = {
     addiTime: number,
 };
 
-export interface GameProps {
+export interface ClockProps {
     players : Player[],
 };

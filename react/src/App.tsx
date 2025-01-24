@@ -44,7 +44,6 @@ function App() {
 
 
 
-
   const getBtnBgColor = (id : number) => {
     if(id == 1) return "bg-amber-900";
     return "bg-lime-900"
@@ -61,25 +60,29 @@ function App() {
   }
 
 
-  const ps : Player[] = [
-    {
-    startTime: startTime,
-    id : 1,
-    addiTime: addiTime,
-    }, 
-    {
-    startTime: startTime,
-    id : 2,
-    addiTime: addiTime,
-    }
-];
 
-  const [players, setPlayers] = useState(ps);
+
+
+  const [players, setPlayers] = useState(
+    [
+      {
+      startTime: startTime,
+      id : 1,
+      addiTime: addiTime,
+      }, 
+      {
+      startTime: startTime,
+      id : 2,
+      addiTime: addiTime,
+      }
+  ]
+  );
 
 
 
   const setPlayTime = (playerId: number, startTime: number) => {
 
+    // validate
     if(startTime < 1 || startTime > 3*60){
       return;
     }
@@ -90,6 +93,7 @@ function App() {
     }
 
 
+    // set by id
     const newPlayers = players.map((el)=>{
       if(el.id == playerId){
         el.startTime = startTime;
@@ -103,6 +107,7 @@ function App() {
   
   const setAddiTime =  (playerId: number, addiTime: number) => {
 
+    // validate
     if(addiTime < 0 || addiTime > 60*2){
       return;
     }
@@ -111,6 +116,7 @@ function App() {
       addiTime = 0; 
     }
 
+        // set by id
     const newPlayers = players.map((el)=>{
       if(el.id == playerId){
         el.addiTime = addiTime;
@@ -137,7 +143,7 @@ function App() {
 
   return (
     <>
-    <h1>hello there</h1>
+
       <AlertDialog  open={isDialogOpen}>
 
       <AlertDialogContent className="bg-slate-900 max-h-[90vh] overflow-x-hidden overflow-y-auto">
