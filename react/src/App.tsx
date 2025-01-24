@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/alert-dialog"
 
 
+
+
 import {ShareSocial} from 'react-share-social' 
 
 
@@ -36,55 +38,16 @@ type Player = {
   addiTime: number,
 };
 
-type TimeRecom = {
-  name: string,
-  time : number,
-};
 
 function App() {
   const url = window.location.href;
   const [isDialogOpen, setDialogOpen] = useState(true);
   const [isSamePlayTime, setSamePlayTime] = useState(true);
   const startTime = 10; const addiTime = 5;
-
-  const startTimeRecom : TimeRecom[] = [
-    {
-      name : "5m",
-      time : 5,
-    },
-
-    {
-      name : "10m",
-      time : 10,
-    },
-
-    {
-      name : "15m",
-      time : 15,
-    },
+  const [showClock,setShowClock] = useState(false);
 
 
-    {
-      name : "30m",
-      time : 30,
-    },
 
-    {
-      name : "1h",
-      time : 60,
-    },
-
-
-    {
-      name : "1h30m",
-      time : 90,
-    },
-
-    {
-      name : "2h",
-      time : 120,
-    },
-  ];
 
 
   const getBtnBgColor = (id : number) => {
@@ -103,56 +66,31 @@ function App() {
   }
 
 
-  const addiTimeRecom : TimeRecom[] = [
-    {
-      name : "0s",
-      time : 0,
-    },
 
-    {
-      name : "1s",
-      time : 1,
-    },
+  
+  const startGame = () => {
+    if(isSamePlayTime){
+      // if same then change second player data as the first one
+      players[1] = players[0];
+    }
 
-    {
-      name : "3s",
-      time : 3,
-    },
-
-
-    {
-      name : "5s",
-      time : 5,
-    },
-
-    {
-      name : "10s",
-      time : 10,
-    },
-
-
-    {
-      name : "30s",
-      time : 30,
-    },
-
-    {
-      name : "1m",
-      time : 60,
-    },
-  ];
+    setDialogOpen(false);
+    setShowClock(true);
+  }
+  
   const ps : Player[] = [
     {
-      startTime: startTime,
-      id : 1,
-      addiTime: addiTime,
+    startTime: startTime,
+    id : 1,
+    addiTime: addiTime,
     }, 
     {
-      startTime: startTime,
-      id : 2,
-      addiTime: addiTime,
+    startTime: startTime,
+    id : 2,
+    addiTime: addiTime,
     }
-  ]
+];
+
   const [players, setPlayers] = useState(ps);
 
 
@@ -221,7 +159,7 @@ function App() {
 
         <div >
 
-      
+
       {
           (isSamePlayTime ? [players[0]] : players).map(player =>
           <div key={`player-${player.id}`} >
@@ -302,9 +240,12 @@ function App() {
 
 
         <div className="flex my-2 gap-x-2">
-          <Button className="w-full bg-lime-900 hover:bg-lime-950">Download as App</Button>
+          <div className="w-full">
+          <Button onClick={()=>document?.getElementById('install-dialog')?.show()} className="w-full bg-lime-900 hover:bg-lime-950">Download as App</Button>
+          </div>
+          <div className="w-full">
           <Dialog>
-              <DialogTrigger>          
+              <DialogTrigger className="w-full">          
                 <Button className="w-full bg-lime-900 hover:bg-lime-950">Share With Friends</Button>
               </DialogTrigger>
               <DialogContent className="bg-slate-900">
@@ -338,6 +279,8 @@ function App() {
                 </DialogHeader>
               </DialogContent>
           </Dialog>
+          </div>
+
           </div>
         <div className="text-xs flex gap-1 justify-center">
         <span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-amber-700">Zenku</a> (Enajjachi Zakariaa).</span>

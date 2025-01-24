@@ -23,6 +23,9 @@ importers:
       '@radix-ui/react-switch':
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@storedotapp/pwa-install-dialog':
+        specifier: ^1.1.2
+        version: 1.1.2
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -1118,6 +1121,9 @@ packages:
 
   '@sinonjs/fake-timers@9.1.2':
     resolution: {integrity: sha512-BPS4ynJW/o92PUR4wgriz2Ud5gpST5vz6GQfMixEDK0Z8ZCUv2M7SkBLykH56T++Xs+8ln9zTGbOvNGIe02/jw==}
+
+  '@storedotapp/pwa-install-dialog@1.1.2':
+    resolution: {integrity: sha512-m2H/MnACp2KdMaj4uI2rLJn2oihO/sgqNFtQUVOjZddQW9vU+nWZFmOZ3CPqrCZsOsJh8wWj62e4lPSY3bo4AQ==}
 
   '@swc/core-darwin-arm64@1.10.8':
     resolution: {integrity: sha512-FtacTu9zS5YuepujQqujveNw8BQ8ESJ+pN1Z7C+WrKCHlCl+5dh0n6gMAlEj+3iRvY6UAYqkzTVeiX/bOMoJKA==}
@@ -4659,6 +4665,8 @@ snapshots:
   '@sinonjs/fake-timers@9.1.2':
     dependencies:
       '@sinonjs/commons': 1.8.6
+
+  '@storedotapp/pwa-install-dialog@1.1.2': {}
 
   '@swc/core-darwin-arm64@1.10.8':
     optional: true
