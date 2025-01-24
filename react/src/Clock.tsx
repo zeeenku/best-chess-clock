@@ -24,13 +24,13 @@ const Clock: FC<ClockProps> = ({ players }) => {
   // Function to convert seconds into a formatted time
   const getClockTime = (time: number) => {
     const hI = Math.floor(time / 3600); // Hours if applicable
-    const hS = sI < 10 ? sI.toString().padStart(2, '0') : sI.toString();
-    const mI = Math.floor((time - h*3600)%60);
-    const hS = sI < 10 ? sI.toString().padStart(2, '0') : sI.toString();
+    const hS = hI < 10 ? hI.toString().padStart(2, '0') : hI.toString();
+    const mI = Math.floor((time - hI*3600)%60);
+    const mS = mI < 10 ? mI.toString().padStart(2, '0') : mI.toString();
     const sI = time % 60;
     const sS = sI < 10 ? sI.toString().padStart(2, '0') : sI.toString();
 
-    return `${h ? h + " : " : ""}${ m  || h ? m + " : " : ""}${sS}`;
+    return `${hI ? hS + " : " : ""}${ mI  || hI ? mS + " : " : ""}${sS}`;
   };
 
   return (
