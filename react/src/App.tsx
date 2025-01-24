@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef} from 'react'
+import { useState} from 'react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,13 +30,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 import './App.css'
+import { Player } from '@/types'
 
-
-type Player = {
-  startTime: number,
-  id : number,
-  addiTime: number,
-};
 
 
 function App() {
@@ -66,18 +61,6 @@ function App() {
   }
 
 
-
-  
-  const startGame = () => {
-    if(isSamePlayTime){
-      // if same then change second player data as the first one
-      players[1] = players[0];
-    }
-
-    setDialogOpen(false);
-    setShowClock(true);
-  }
-  
   const ps : Player[] = [
     {
     startTime: startTime,
@@ -116,10 +99,8 @@ function App() {
     setPlayers(newPlayers);
   }
 
-  useEffect(()=>{
-    
-  },[isSamePlayTime, players])
 
+  
   const setAddiTime =  (playerId: number, addiTime: number) => {
 
     if(addiTime < 0 || addiTime > 60*2){
@@ -137,7 +118,21 @@ function App() {
       return el;
     })
     setPlayers(newPlayers);
+}
+
+  
+
+  const startGame = () => {
+    if(isSamePlayTime){
+      // if same then change second player data as the first one
+      players[1] = players[0];
+    }
+
+    setDialogOpen(false);
+    setShowClock(true);
   }
+  
+
 
 
   return (
