@@ -10,7 +10,20 @@ interface ClockPlayer {
 
 const Clock: FC<ClockProps> = ({ players }) => {
   const [isGameStarted, setGameStarted] = useState(false)
+  const [turnId, setTurnId] = useState(0);
+
   // Map over players and create new state with the appropriate structure
+
+  const finishTurn = (t  : number) => {
+    if(turnId == 0){
+      setTurnId(t);
+      return;
+    }
+    // todo finish time loop that shoyuld be added 
+    //demo should be upodated
+    const nTurn : number = t == 1 ? 2 : 1;
+    setTurnId(nTurn);
+  }
   const [playersState, setPlayers] = useState(
     players.map((el) => {
       const p: ClockPlayer = {
