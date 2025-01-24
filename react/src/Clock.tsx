@@ -9,6 +9,7 @@ interface ClockPlayer {
 }
 
 const Clock: FC<ClockProps> = ({ players }) => {
+  const [isGameStarted, setGameStarted] = useState(false)
   // Map over players and create new state with the appropriate structure
   const [playersState, setPlayers] = useState(
     players.map((el) => {
@@ -49,6 +50,17 @@ const Clock: FC<ClockProps> = ({ players }) => {
             </button>
           </div>
         ))}
+      </div>
+
+      <div className="mt-5 text-center text-2xl">
+        {
+          isGameStarted ? (
+            // show bts
+            <div>hhhh</div>
+          ) : 
+            <h3>The white to click on a button and Start The game</h3>
+
+        }
       </div>
     </main>
   );
