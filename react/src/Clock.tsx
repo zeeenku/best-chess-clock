@@ -38,7 +38,7 @@ const Clock: FC<ClockProps> = ({ config }) => {
     config.map((el) => {
       const p: ClockPlayer = {
         startTimeInMinutes : el.startTime,
-        timeInMilliSeconds: el.startTime * 60 * 1000, // Convert to seconds
+        timeInMilliSeconds: el.startTime * 60 * 1000, // Convert to milliseconds
         incTimeInSeconds: el.addiTime,   // Additional time
         id: el.id,
       };
@@ -95,7 +95,7 @@ const Clock: FC<ClockProps> = ({ config }) => {
     const time = Math.ceil(t/1000);
     const hI = Math.floor(time / 3600); // Hours if applicable
     const hS = hI < 10 ? hI.toString().padStart(2, '0') : hI.toString();
-    const mI = Math.floor((time - hI*3600)%60);
+    const mI = Math.floor((time - hI*3600)/60);
     const mS = mI < 10 ? mI.toString().padStart(2, '0') : mI.toString();
     const sI = time % 60;
     const sS = sI < 10 ? sI.toString().padStart(2, '0') : sI.toString();
