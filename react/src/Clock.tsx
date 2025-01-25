@@ -125,7 +125,7 @@ const Clock: FC<ClockProps> = ({ config }) => {
 
     const audio = new Audio('/media/click.mp3');
     audio.play();
-    
+
     clockRef.current?.stopInterval();
     incTime(t);
 
@@ -146,9 +146,14 @@ const Clock: FC<ClockProps> = ({ config }) => {
     return `${hI ? hS + " : " : ""}${mS + " : "}${sS}`;
   };
 
+  const isHorizontal = window.innerWidth > window.innerHeight;
+
   return (
-    <main className="w-screen h-screen px-20">
-      <div className="h-[80vh] mt-5 flex">
+    <main className={`${isHorizontal ? 'w-[100dvw] h-[100dvh]' : 'w-[100dvh] h-[100dvw] rotate-90'} fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-20`}>
+            <div className=" mt-5 flex justify-center space-x-5 items-center">
+            <h2 className="text-4xl mb-3">Turn 0</h2>            
+      </div>
+      <div className=" mt-5 flex">
         {players.map((player, index) => (
           <div key={index} className="h-full w-6/12 flex flex-col items-center p-5">
             <h2 className="text-4xl mb-3">Player {player.id} {`${player.color ?? ""}`}</h2>
