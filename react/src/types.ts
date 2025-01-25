@@ -10,5 +10,5 @@ export type Player = {
 };
 
 export interface ClockProps {
-    config : Player[],
+    config : [Player, Player],
 };

@@ -40,14 +40,15 @@ const Clock: FC<ClockProps> = ({ config }) => {
   
   // Players state
   const [players, setPlayers] = useState(
-    config.map((el) => ({
+    config.map((el) => { const e : ClockPlayer = {
       startTimeInMinutes: el.startTime,
       timeInMilliSeconds: el.startTime * 60 * 1000, // Convert to milliseconds
       incTimeInSeconds: el.addiTime, // Additional time
       id: el.id,
       color : ""
-    }))
-  );
+    };
+    return e;}
+  ));
 
   const clockRef = useRef<ClockInterval | null>(null);
 
@@ -176,7 +177,7 @@ const Clock: FC<ClockProps> = ({ config }) => {
         {isGameStarted ? (
           <div>Game is running...</div>
         ) : (
-          <h3>The white needs to click the button to start the game</h3>
+          <h3>The white to click a button & start the game</h3>
         )}
       </div>
     </main>
