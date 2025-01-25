@@ -52,14 +52,22 @@ const Clock: FC<ClockProps> = ({ config }) => {
   const clockRef = useRef<ClockInterval | null>(null);
 
   const activateClock = (turn : number) => {
-    console.log(turn)
+    let lostId : number = 0;
+    let lostColor : string = "";
     const updatedPlayers = players.map((el) => {
       if (el.id === turn) {
         el.timeInMilliSeconds -= stepInMilliSeconds;
       }
+      if(el.timeInMilliSeconds <= 0){
+        lostId = el.id;
+        lostColor = el.color;
+      }
       return el;
     });
     setPlayers(updatedPlayers);
+    if(lostId){
+      alert(`player ${lostId} with color ${lostColor} lost`);
+    }
   };
 
   useEffect(() => {
