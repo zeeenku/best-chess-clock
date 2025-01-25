@@ -66,7 +66,14 @@ const Clock: FC<ClockProps> = ({ config }) => {
     });
     setPlayers(updatedPlayers);
     if(lostId){
-      alert(`player ${lostId} with color ${lostColor} lost`);
+      //todo: send event to parent or show dialog already her
+      //todo: the loser & winner dialog should reflect and also show a replat btn
+      //todo: and a btn of go back to config
+      //todo: in case of return we would have to send an event again....
+      //todo: maybe add a counter for each player as 0-0.....
+
+      console.log(`player ${lostId} with color ${lostColor} lost`);
+      clockRef.current?.stopInterval();
     }
   };
 
@@ -116,6 +123,9 @@ const Clock: FC<ClockProps> = ({ config }) => {
 
     if (t !== turnId) return;
 
+    const audio = new Audio('/media/click.mp3');
+    audio.play();
+    
     clockRef.current?.stopInterval();
     incTime(t);
 
@@ -133,7 +143,7 @@ const Clock: FC<ClockProps> = ({ config }) => {
     const sI = time % 60;
     const sS = sI < 10 ? sI.toString().padStart(2, '0') : sI.toString();
 
-    return `${hI ? hS + " : " : ""}${mI || hI ? mS + " : " : ""}${sS}`;
+    return `${hI ? hS + " : " : ""}${mS + " : "}${sS}`;
   };
 
   return (
@@ -147,7 +157,9 @@ const Clock: FC<ClockProps> = ({ config }) => {
             </h3>
             <button
               onClick={() => finishTurn(player.id)}
-              className="clock-button w-full h-full text-slate-900 text-4xl time"
+              className={`${player.id !== turnId ? "active" : "finish-turn"} 
+              clock-button w-full h-full text-slate-900 text-4xl time
+              `}
             >
               <span className="text-5xl">{getClockTime(player.timeInMilliSeconds)}</span>
             </button>
