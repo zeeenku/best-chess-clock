@@ -145,7 +145,7 @@ function App() {
     <>
 
       {
-        showClock ? <Clock players={players} /> : <></>
+        showClock ? <Clock config={players} /> : <></>
       }
       <AlertDialog  open={isDialogOpen}>
 
