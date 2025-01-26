@@ -150,11 +150,12 @@ const Clock: FC<ClockProps> = ({ config }) => {
   const isHorizontal = window.innerWidth > window.innerHeight;
 
   return (
-    <main className={`${isHorizontal ? 'w-[100dvw] h-[100dvh]' : 'w-[100dvh] h-[100dvw] rotate-90'} fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-20`}>
-            <div className=" mt-5 flex justify-center space-x-5 items-center">
-            <h2 className="text-4xl mb-3">Turn 0</h2>            
+    <main className={`${isHorizontal ? 'w-[100dvw] h-[100dvh]' : 'w-[100dvh] h-[100dvw] rotate-90'} 
+    fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-20`}>
+            <div className="flex h-[10%] bg-red-500 justify-center items-center">
+            <h2 className="text-4xl">Turn 0</h2>            
       </div>
-      <div className=" mt-5 flex">
+      <div className="h-[50vh] mt-5 flex">
         {players.map((player, index) => (
           <div key={index} className="h-full w-6/12 flex flex-col items-center p-5">
             <h2 className="text-4xl mb-3">Player {player.id} {`${player.color ?? ""}`}</h2>
@@ -180,6 +181,13 @@ const Clock: FC<ClockProps> = ({ config }) => {
           <h3>The white to click a button & start the game</h3>
         )}
       </div>
+
+      <div className="text-xs flex gap-1 justify-center">
+        <span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-amber-700">Zenku</a> (Enajjachi Zakariaa).</span>
+
+          <span className="text-gray-300 text-center">You can read the code (<a href="https://github.com/zeeenku/best-chess-clock" className="underline text-amber-700">repo</a>)</span>
+        </div>
+
     </main>
   );
 };
