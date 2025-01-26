@@ -153,22 +153,24 @@ const Clock: FC<ClockProps> = ({ config }) => {
   const isHorizontal = window.innerWidth > window.innerHeight;
 
   return (
-    <main className={`${isHorizontal ? 'w-[100dvw] h-[100dvh]' : 'w-[100dvh] h-[100dvw] rotate-90'} 
-    fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-20`}>
+    <main className={`${isHorizontal ? 'w-[100dvw] h-[100dvh] p-20' : 'p-4 w-[100dvh] h-[100dvw] rotate-90'} 
+    fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 `}>
             <div className="flex h-[10%] bg-red-500 justify-center items-center">
             <h2 className="text-4xl">Turn {turnCount}</h2>            
       </div>
-      <div className="h-[50vh] mt-5 flex">
+      <div className={`${isHorizontal ? "h-[50dvh]" :  "h-[50dvw] " } mt-5 w-full flex`}>
         {players.map((player, index) => (
-          <div key={index} className="h-full w-6/12 flex flex-col items-center p-5">
-            <h2 className="text-4xl mb-3">Player {player.id} {`${player.color ?? ""}`}</h2>
+          <div key={index} className="h-full w-6/12 flex flex-col items-center p-2 lg:p-5">
+            <div className="flex lg:flex-col justify-center items-center ">
+            <h2 className="text-4xl lg:text-4xl mb-3">Player {player.id} {`${player.color ?? ""}`}</h2>
             <h3 className="text-2xl mb-3">
-              {players[index].startTimeInMinutes} + {players[index].incTimeInSeconds}
+              ({players[index].startTimeInMinutes} + {players[index].incTimeInSeconds})
             </h3>
+            </div>
             <button
               onClick={() => finishTurn(player.id)}
               className={`${player.id !== turnId ? "active" : "finish-turn"} 
-              clock-button w-full h-full text-slate-900 text-4xl time
+              clock-button w-full text-slate-900 text-4xl time
               `}
             >
               <span className="text-5xl">{getClockTime(player.timeInMilliSeconds)}</span>
