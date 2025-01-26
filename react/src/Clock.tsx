@@ -1,7 +1,6 @@
 import { ClockProps } from "@/types";
 import { FC, useState, useEffect, useRef } from "react";
 
-// Define the ClockPlayer type
 interface ClockPlayer {
   timeInMilliSeconds: number;
   incTimeInSeconds: number;
@@ -9,6 +8,7 @@ interface ClockPlayer {
   color: string;
   id: number;
 }
+
 
 class ClockInterval {
   interval: number | null;
@@ -36,9 +36,10 @@ class ClockInterval {
 const Clock: FC<ClockProps> = ({ config }) => {
   const [isGameStarted, setGameStarted] = useState(false);
   const [turnId, setTurnId] = useState(0);
+  const [turnCount, setTurnCount] = useState(0);
   const stepInMilliSeconds = 100;
   
-  // Players state
+
   const [players, setPlayers] = useState(
     config.map((el) => { const e : ClockPlayer = {
       startTimeInMinutes: el.startTime,
@@ -129,7 +130,9 @@ const Clock: FC<ClockProps> = ({ config }) => {
 
     clockRef.current?.stopInterval();
     incTime(t);
-
+    if(players[t-1].color == "black"){
+      setTurnCount(turnCount + 1);
+    }
     const nextTurn = t === 1 ? 2 : 1;
     await setTurnId(nextTurn);
     await clockRef.current?.startInterval(()=>activateClock(nextTurn));
@@ -153,7 +156,7 @@ const Clock: FC<ClockProps> = ({ config }) => {
     <main className={`${isHorizontal ? 'w-[100dvw] h-[100dvh]' : 'w-[100dvh] h-[100dvw] rotate-90'} 
     fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-20`}>
             <div className="flex h-[10%] bg-red-500 justify-center items-center">
-            <h2 className="text-4xl">Turn 0</h2>            
+            <h2 className="text-4xl">Turn {turnCount}</h2>            
       </div>
       <div className="h-[50vh] mt-5 flex">
         {players.map((player, index) => (
