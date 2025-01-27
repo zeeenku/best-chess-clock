@@ -197,7 +197,10 @@ const Clock: FC<ClockProps> = ({ config }) => {
             <div className="h-[10%] w-full flex justify-center items-center">
                   {players.map((player) => (
                     <>
-                            <h2 className="w-2/12 h-full text-2xl text-center lg:text-4xl mb-3">{player.color}</h2>
+                            <h2 className="w-2/12 h-full flex items-center space-x-2 justify-center text-center  mb-3">
+                            <span className="text-xl lg:text-2xl">{player.color}</span>
+                            <span className="text-lg lg:text-xl">{player.startTimeInMinutes}+{player.incTimeInSeconds}</span>
+                            </h2>
                             {
                               (player.id == 1 ? 
                                 <div className="w-[36%] h-full px-2">
