@@ -1,6 +1,6 @@
 import { ClockProps } from "@/types";
 import { FC, useState, useEffect, useRef } from "react";
-
+import {RotateCcw,Pause,Play, X} from "lucide-react";
 interface ClockPlayer {
   timeInMilliSeconds: number;
   incTimeInSeconds: number;
@@ -153,20 +153,20 @@ const Clock: FC<ClockProps> = ({ config }) => {
   const isHorizontal = window.innerWidth > window.innerHeight;
 
   return (
-    <main className={`${isHorizontal ? 'w-[100dvw] h-[100dvh] p-20' : 'p-4 w-[100dvh] h-[100dvw] rotate-90'} 
+    <main className={`${isHorizontal ? 'w-[100dvw] h-[100dvh] p-10' : 'p-3 w-[100dvh] h-[100dvw] rotate-90'} 
     fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 `}>
             <div className="flex h-[10%] bg-red-500 justify-center items-center">
            
       </div>
-      <div className="h-[15%] pt-5 w-full flex space-x-16 justify-around items-center">
+      <div className="h-[15%] pt-5 w-full flex space-x-16 justify-around items-end">
       {players.map((player) => (
-                 <h2 className="w-1/2 h-full text-4xl text-center lg:text-4xl mb-3">Player {player.id}</h2>
+                 <h2 className="w-1/2 text-4xl text-center lg:text-4xl mb-3">Player {player.id}</h2>
       ))}
       </div>
       <div className={`${isHorizontal ? "h-[45dvh]" :  "h-[45dvw] " } pt-1 w-full flex items-center`}>
         {players.map((player, index) => (
           <>
-          <div key={index} className="h-full w-6/12 flex flex-col items-center p-1 lg:p-5">
+          <div key={index} className="h-full w-6/12 flex flex-col items-center p-1 lg:px-5">
             <div className="flex lg:flex-col justify-center items-center ">
             {/* <h2 className="text-4xl lg:text-4xl mb-3">Player {player.id} {`${player.color ?? ""}`}</h2> */}
             {/* <h3 className="text-2xl mb-3">
@@ -176,7 +176,7 @@ const Clock: FC<ClockProps> = ({ config }) => {
             <button
               onClick={() => finishTurn(player.id)}
               className={`${player.id !== turnId ? "active" : "finish-turn"} 
-              clock-button w-full h-[90%] text-slate-900 text-4xl time
+              clock-button w-full text-slate-900 text-4xl time
               `}
             >
               <span className="text-5xl">{getClockTime(player.timeInMilliSeconds)}</span>
@@ -193,14 +193,33 @@ const Clock: FC<ClockProps> = ({ config }) => {
 
       <div className="mt-5 text-center text-2xl">
         {isGameStarted ? (
-          <div className="">Game is running...</div>
+          <>
+            <div className="h-[10%] w-full flex justify-center items-center">
+                  {players.map((player) => (
+                    <>
+                            <h2 className="w-2/12 h-full text-2xl text-center lg:text-4xl mb-3">{player.color}</h2>
+                            {
+                              (player.id == 1 ? 
+                                <div className="w-[36%] h-full px-2">
+                                  <button><RotateCcw/></button>
+                                  <button><Pause/></button>
+                                  <button><Play/></button>
+                                  <button><X/></button>
+
+                                </div>
+                                : <></>)
+                            }
+                            </>
+                  ))}
+            </div>
+          </>
         ) : (
 
           <h3>The white to click a button & start the game</h3>
         )}
       </div>
 
-      <div className="text-xs flex gap-1 justify-center">
+      <div className="text-xs h-[10%] items-end flex gap-1 justify-center">
         <span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-amber-700">Zenku</a> (Enajjachi Zakariaa).</span>
 
           <span className="text-gray-300 text-center">You can read the code (<a href="https://github.com/zeeenku/best-chess-clock" className="underline text-amber-700">repo</a>)</span>

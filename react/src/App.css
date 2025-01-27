@@ -37,6 +37,7 @@ body{
   vertical-align: middle;
   text-decoration: none;
   font-family: inherit;
+  height:calc(100% - 1rem);
 }
 
 .clock-button.time {
