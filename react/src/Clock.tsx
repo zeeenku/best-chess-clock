@@ -153,7 +153,7 @@ const Clock: FC<ClockProps> = ({ config }) => {
   const isHorizontal = window.innerWidth > window.innerHeight;
 
   return (
-    <main className={`${isHorizontal ? 'w-[100dvw] h-[100dvh] p-10' : 'p-3 w-[100dvh] h-[100dvw] rotate-90'} 
+    <main className={`${isHorizontal ? 'w-[100dvw] h-[100dvh] p-5' : 'p-3 w-[100dvh] h-[100dvw] rotate-90'} 
     fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 `}>
             <div className="flex h-[10%] bg-red-500 justify-center items-center">
            
@@ -222,7 +222,10 @@ const Clock: FC<ClockProps> = ({ config }) => {
         )}
       </div>
 
-      <div className="text-xs h-[10%] items-end flex gap-1 justify-center">
+      <div className="text-base lg:flex hidden h-[7%] items-end gap-1 justify-center">
+        Tip: You can press Enter to switch turns
+      </div>
+      <div className="text-xs h-[7%] items-end flex gap-1 justify-center">
         <span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-amber-700">Zenku</a> (Enajjachi Zakariaa).</span>
 
           <span className="text-gray-300 text-center">You can read the code (<a href="https://github.com/zeeenku/best-chess-clock" className="underline text-amber-700">repo</a>)</span>
