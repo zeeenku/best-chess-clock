@@ -1,13 +1,43 @@
 import { ClockProps } from "@/types";
 import { FC, useState, useEffect, useRef } from "react";
 import {RotateCcw,Pause,Play, X} from "lucide-react";
-interface ClockPlayer {
+
+enum PlayerColor {
+  "black",
+  "white"
+}
+class ClockPlayer {
   timeInMilliSeconds: number;
   incTimeInSeconds: number;
   startTimeInMinutes: number;
-  color: string;
+  color: PlayerColor | null;
   id: number;
-}
+
+  constructor(id : number, startTimeInMinutes : number, incTimeInSeconds : number, color : PlayerColor? = null){
+    this.startTimeInMinutes= startTimeInMinutes;
+    this.timeInMilliSeconds= startTimeInMinutes * 60 * 1000; 
+    this.incTimeInSeconds= incTimeInSeconds;
+    this.id= id;
+    this.color = color;
+  }
+
+  getClockTime = () => {
+    const t = this.timeInMilliSeconds;
+    const time = Math.ceil(t / 1000);
+    const hI = Math.floor(time / 3600); // Hours if applicable
+    const hS = hI < 10 ? hI.toString().padStart(2, '0') : hI.toString();
+    const mI = Math.floor((time - hI * 3600) / 60);
+    const mS = mI < 10 ? mI.toString().padStart(2, '0') : mI.toString();
+    const sI = time % 60;
+    const sS = sI < 10 ? sI.toString().padStart(2, '0') : sI.toString();
+    return `${hI ? hS + " : " : ""}${mS + " : "}${sS}`;
+  };
+
+  setColors = (color: PlayerColor)=>{
+    this.color = color;
+    };
+  }
+
 
 
 class ClockInterval {
@@ -38,18 +68,16 @@ const Clock: FC<ClockProps> = ({ config }) => {
   const [turnId, setTurnId] = useState(0);
   const [turnCount, setTurnCount] = useState(0);
   const stepInMilliSeconds = 100;
-  
+  const startGame = (turnId : number) => {
+    //todo: choose the current turn and make it white where other is black
+  }
+
 
   const [players, setPlayers] = useState(
-    config.map((el) => { const e : ClockPlayer = {
-      startTimeInMinutes: el.startTime,
-      timeInMilliSeconds: el.startTime * 60 * 1000, // Convert to milliseconds
-      incTimeInSeconds: el.addiTime, // Additional time
-      id: el.id,
-      color : ""
-    };
-    return e;}
-  ));
+    config.map(
+      (el) => new ClockPlayer(el.id, el.startTime, el.addiTime )
+    )
+  );
 
   const clockRef = useRef<ClockInterval | null>(null);
 
@@ -134,6 +162,7 @@ const Clock: FC<ClockProps> = ({ config }) => {
       setTurnCount(turnCount + 1);
     }
     const nextTurn = t === 1 ? 2 : 1;
+    // increment turn here....
     await setTurnId(nextTurn);
     await clockRef.current?.startInterval(()=>activateClock(nextTurn));
   };
@@ -156,7 +185,6 @@ const Clock: FC<ClockProps> = ({ config }) => {
     <main className={`${isHorizontal ? 'w-[100dvw] h-[100dvh] p-5' : 'p-3 w-[100dvh] h-[100dvw] rotate-90'} 
     fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 `}>
             <div className="flex h-[10%] bg-red-500 justify-center items-center">
-           
       </div>
       <div className="h-[15%] pt-5 w-full flex space-x-16 justify-around items-end">
       {players.map((player) => (
