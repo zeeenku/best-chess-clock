@@ -192,11 +192,18 @@ const Clock: FC<ClockProps> = ({ config }) => {
     await startTurn();
   }
 
-  const looseGame = () => {
-
+  const looseGame = (looserId : number) => {
+    stopTurn();
+    clockConfig.setGameStatus("finished" as ClockStatus);
+    //clockConfig.turnId
+    setClockConfig(clockConfig);
+    //todo : use it for game result component
+    alert(`player ${looserId+1} has lost`);
+    restartClock();
   }
 
   const restartClock = () => {
+
     stopTurn();
 
     // init players
@@ -231,8 +238,7 @@ const Clock: FC<ClockProps> = ({ config }) => {
       //todo: and a btn of go back to config
       //todo: in case of return we would have to send an event again....
       //todo: maybe add a counter for each player as 0-0.....
-
-      clockIntRef.current?.stopInterval();
+      looseGame(turn);
     }
   };
 
@@ -399,7 +405,7 @@ const clickRestart = () => {
                                   <button onClick={clickRestart}><RotateCcw/></button>
                                   <button onClick={pausePlayClock}><Pause/></button>
                                   <button onClick={pausePlayClock}><Play/></button>
-                                  <button><X/></button>
+                                  <button onClick={()=>looseGame(0)}><X/></button>
 
                                 </div>
                                 : <></>)
