@@ -6,6 +6,7 @@ enum PlayerColor {
   black = "black",
   white = "white"
 }
+
 class ClockPlayer {
   timeInMilliSeconds: number;
   incTimeInSeconds: number;
@@ -21,7 +22,7 @@ class ClockPlayer {
     this.color = color;
   }
 
-  getClockTime = () => {
+  getTimeFormatted = () => {
     const t = this.timeInMilliSeconds;
     const time = Math.ceil(t / 1000);
     const hI = Math.floor(time / 3600); // Hours if applicable
@@ -184,17 +185,6 @@ const incTurnCounter = (color : PlayerColor) => {
     await startTurn(nextTurn);
   };
 
-  const getClockTime = (t: number) => {
-    const time = Math.ceil(t / 1000);
-    const hI = Math.floor(time / 3600); // Hours if applicable
-    const hS = hI < 10 ? hI.toString().padStart(2, '0') : hI.toString();
-    const mI = Math.floor((time - hI * 3600) / 60);
-    const mS = mI < 10 ? mI.toString().padStart(2, '0') : mI.toString();
-    const sI = time % 60;
-    const sS = sI < 10 ? sI.toString().padStart(2, '0') : sI.toString();
-
-    return `${hI ? hS + " : " : ""}${mS + " : "}${sS}`;
-  };
 
   const isHorizontal = window.innerWidth > window.innerHeight;
 
@@ -224,7 +214,7 @@ const incTurnCounter = (color : PlayerColor) => {
               clock-button w-full text-slate-900 text-4xl time
               `}
             >
-              <span className="text-5xl">{getClockTime(player.timeInMilliSeconds)}</span>
+              <span className="text-5xl">{player.getTimeFormatted()}</span>
             </button>
           </div>
           { index == 0 ? 

@@ -5,7 +5,6 @@ export type TimeRecom = {
 
 export type Player = {
     startTime: number,
-    id : number,
     addiTime: number,
 };
 
