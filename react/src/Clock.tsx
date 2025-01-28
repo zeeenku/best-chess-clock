@@ -83,6 +83,12 @@ class ClockConfig{
   turnId : number = -1;
   turnsCount : number = 0;
 
+  initClock(){
+    this.gameStatus = "notStarted" as ClockStatus;
+    this.turnId = -1;
+    this.turnsCount = 0;  
+  }
+
   isGameStatus(status : ClockStatus){
     return this.gameStatus == status; 
   }
@@ -181,9 +187,9 @@ const Clock: FC<ClockProps> = ({ config }) => {
     clockConfig.setGameStatus("paused" as ClockStatus);
   }
 
-  const startClock = () => {
-    clockConfig.setGameStatus("active" as ClockStatus);
-    startTurn();
+  const playClock = async () => {
+    await clockConfig.setGameStatus("active" as ClockStatus);
+    await startTurn();
   }
 
   const looseGame = () => {
@@ -202,14 +208,21 @@ const Clock: FC<ClockProps> = ({ config }) => {
     setPlayers(newPlayers);
 
 
-    clockConfig.setGameStatus("notStarted" as ClockStatus);
+    clockConfig.initClock();
+    setClockConfig(clockConfig);
   }
 
   const runClock = (turn : number) => {
   
-    players[turn].timeInMilliSeconds -= clockUpdateIntStep;
 
-    setPlayers(players);
+    setPlayers( players.map((el, id)=>{
+      if(id == turn){
+        el.timeInMilliSeconds -= clockUpdateIntStep;
+      }
+      return el;
+    }) as [ClockPlayer, ClockPlayer]);
+
+
     const isLost = players[turn].timeInMilliSeconds <= 0;
 
     if(isLost){
@@ -234,7 +247,6 @@ const Clock: FC<ClockProps> = ({ config }) => {
 
 
 
-
   const playSoundEffect = (t : "click" | "timeout") => {
     let stt = "/media/click.mp3";
     if(t == "timeout"){
@@ -252,9 +264,9 @@ const Clock: FC<ClockProps> = ({ config }) => {
   btns click section
 */
 
-const clickPausePlay = () => {
-  if(clockConfig.isGameStatus("pause" as ClockStatus)){
-    startClock();
+const pausePlayClock = () => {
+  if(clockConfig.isGameStatus("paused" as ClockStatus)){
+    playClock();
   }
   else
   {
@@ -372,7 +384,7 @@ const clickRestart = () => {
       </div>
 
       <div className="mt-5 text-center text-2xl">
-        {clockConfig.isGameStarted ? (
+        {!clockConfig.isGameStatus("notStarted" as ClockStatus) ? (
           <>
             <div className="h-[10%] w-full flex justify-center items-center">
                   {players.map((player, id) => (
@@ -384,9 +396,9 @@ const clickRestart = () => {
                             {
                               (id == 1 ? 
                                 <div className="w-[36%] h-full px-2">
-                                  <button><RotateCcw/></button>
-                                  <button><Pause/></button>
-                                  <button><Play/></button>
+                                  <button onClick={clickRestart}><RotateCcw/></button>
+                                  <button onClick={pausePlayClock}><Pause/></button>
+                                  <button onClick={pausePlayClock}><Play/></button>
                                   <button><X/></button>
 
                                 </div>
