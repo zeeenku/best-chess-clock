@@ -33,7 +33,7 @@ class ClockPlayer {
     return `${hI ? hS + " : " : ""}${mS + " : "}${sS}`;
   };
 
-  setColors = (color: PlayerColor)=>{
+  setColor = (color: PlayerColor)=>{
     this.color = color;
     };
   }
@@ -68,11 +68,7 @@ const Clock: FC<ClockProps> = ({ config }) => {
   const [turnId, setTurnId] = useState(0);
   const [turnCount, setTurnCount] = useState(0);
   const stepInMilliSeconds = 100;
-  const startGame = (turnId : number) => {
-    //todo: choose the current turn and make it white where other is black
-  }
-
-
+  
   const [players, setPlayers] = useState(
     config.map(
       (el) => new ClockPlayer(el.id, el.startTime, el.addiTime )
@@ -80,6 +76,27 @@ const Clock: FC<ClockProps> = ({ config }) => {
   );
 
   const clockRef = useRef<ClockInterval | null>(null);
+
+
+  const startGame = (whiteId : number) => {
+    const updatedPlayers = players.map((el) => {
+      if (el.id === whiteId) {
+        el.setColor("white");
+      }
+      else
+      {
+        el.setColor("black");
+      }
+      return el;
+    });
+
+    setPlayers(updatedPlayers);
+    setGameStarted(true);
+    return;
+  }
+
+
+
 
   const activateClock = (turn : number) => {
     let lostId : number = 0;
@@ -126,32 +143,19 @@ const Clock: FC<ClockProps> = ({ config }) => {
     setPlayers(updatedPlayers);
   };
 
-  const setColors = (whiteId: number)=>{
-    const updatedPlayers = players.map((el) => {
-      if (el.id === whiteId) {
-        el.color ="white";
-      }
-      else
-      {
-        el.color = "black";
-      }
-      return el;
-    });
-    setPlayers(updatedPlayers);
-  }
+
   const finishTurn = async (t: number) => {
 
+    await setTurnId(t);
+    setColors(t);
+    await clockRef.current?.stopInterval();
+    await clockRef.current?.startInterval(()=>activateClock(t));
+
+    if (t !== turnId && isGameStarted) return;
 
     if (!isGameStarted) {
-      setGameStarted(true);
-      await setTurnId(t);
-      setColors(t);
-      await clockRef.current?.stopInterval();
-      await clockRef.current?.startInterval(()=>activateClock(t));
-      return;
+      startGame(t);
     }
-
-    if (t !== turnId) return;
 
     const audio = new Audio('/media/click.mp3');
     audio.play();
