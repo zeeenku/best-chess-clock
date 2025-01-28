@@ -68,10 +68,26 @@ class ClockInterval {
 }
 
 
+enum ClockStatus {
+  notStarted = "notStarted",
+  active = "active",
+  paused = "paused",
+  finished = "finished"
+};
+
 class ClockConfig{
-  isGameStarted : boolean = false;
+  gameStatus : ClockStatus = "notStarted";
   turnId : number = -1;
   turnsCount : number = 0;
+
+  isGameStatus(status : ClockStatus){
+    return this.gameStatus == status; 
+  }
+
+
+  setGameStatus(status : ClockStatus){
+    return this.gameStatus = status; 
+  }
 
   incTurnsCount(){
     this.turnsCount++;
@@ -82,24 +98,31 @@ class ClockConfig{
   }
 
   start(){
-    this.isGameStarted = true;
+    this.setGameStatus("active" as ClockStatus);
   }
 }
 
 
 const Clock: FC<ClockProps> = ({ config }) => {
 
+  /**
+   * cock logic objects declarations section
+   */
   const [clockConfig, setClockConfig] = useState(new ClockConfig());
-  
+
+
+
+
   const [players, setPlayers] = useState(config.map(
     (el) => new ClockPlayer(el.startTime, el.addiTime )
   ) as [ClockPlayer, ClockPlayer]);
 
+
+
+
+
   const clockIntRef = useRef<ClockInterval | null>(null);
-
   const clockUpdateIntStep = 100;
-
-
   // init clock interval
   useEffect(() => {
     clockIntRef.current = new ClockInterval(clockUpdateIntStep);
@@ -110,6 +133,11 @@ const Clock: FC<ClockProps> = ({ config }) => {
     };
   }, []);
 
+
+
+  /**
+   * clock functionnalities section
+   */
 
 
   const initGame = (whiteId : number) => {
@@ -139,42 +167,52 @@ const Clock: FC<ClockProps> = ({ config }) => {
 
 
 
-  const activateClock = (turn : number) => {
-    let lostId : number = 0;
-    let lostColor : ClockPlayerColor | null = null;
-    const updatedPlayers = players.map((el, id) => {
-      if (id === turn) {
-        el.timeInMilliSeconds -= clockUpdateIntStep;
-      }
-      if(el.timeInMilliSeconds <= 0){
-        lostId = id;
-        lostColor = el.color;
-      }
-      return el;
-    }) as [ClockPlayer, ClockPlayer];
-    setPlayers(updatedPlayers);
-    if(lostId){
-      //todo: send event to parent or show dialog already her
-      //todo: the loser & winner dialog should reflect and also show a replat btn
-      //todo: and a btn of go back to config
-      //todo: in case of return we would have to send an event again....
-      //todo: maybe add a counter for each player as 0-0.....
-
-      console.log(`player ${lostId} with color ${lostColor} lost`);
-      clockIntRef.current?.stopInterval();
-    }
-  };
-
-
 
   const stopTurn = async () => {
     await clockIntRef.current?.stopInterval();
   }
 
 
+  const pauseClock = () => {
+    stopTurn();
+    clockConfig.setGameStatus("paused" as ClockStatus);
+  }
+
+  const startClock = () => {
+    clockConfig.setGameStatus("active" as ClockStatus);
+    startTurn();
+  }
+
+  const looseGame = () => {
+
+  }
+
+  const restartGame = () => {
+
+  }
+
+  const runClock = (turn : number) => {
+  
+    players[turn].timeInMilliSeconds -= clockUpdateIntStep;
+
+    setPlayers(players);
+    const isLost = players[turn].timeInMilliSeconds <= 0;
+
+    if(isLost){
+      //todo: send event to parent or show dialog already her
+      //todo: the loser & winner dialog should reflect and also show a replat btn
+      //todo: and a btn of go back to config
+      //todo: in case of return we would have to send an event again....
+      //todo: maybe add a counter for each player as 0-0.....
+
+      clockIntRef.current?.stopInterval();
+    }
+  };
+
+
   const startTurn = async () => {
     const turnId = clockConfig.turnId;
-    await clockIntRef.current?.startInterval(()=>activateClock(turnId));
+    await clockIntRef.current?.startInterval(()=>runClock(turnId));
   }
 
 
@@ -205,9 +243,12 @@ const Clock: FC<ClockProps> = ({ config }) => {
   const clockBtnClick = async (t: number) => {
 
     /**
+     * game must be either notstarted or active to work....
+     */
+    /**
      * if game not started start game
      */
-    if (!clockConfig.isGameStarted) {
+    if (clockConfig.isGameStatus("notStarted" as ClockStatus)) {
 
       // play sound effect
       playSoundEffect("click");
@@ -229,7 +270,9 @@ const Clock: FC<ClockProps> = ({ config }) => {
      * if game already started
      */
     // validate
-    if (t !== clockConfig.turnId && clockConfig.isGameStarted) return;
+    if (t !== clockConfig.turnId && 
+      clockConfig.isGameStatus("active" as ClockStatus))
+      return;
 
     // sound effect
     playSoundEffect("click");
