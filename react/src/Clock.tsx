@@ -2,7 +2,7 @@ import { ClockProps } from "@/types";
 import { FC, useState, useEffect, useRef } from "react";
 import {RotateCcw,Pause,Play, X} from "lucide-react";
 
-enum PlayerColor {
+enum ClockPlayerColor {
   black = "black",
   white = "white"
 }
@@ -11,9 +11,9 @@ class ClockPlayer {
   timeInMilliSeconds: number;
   incTimeInSeconds: number;
   startTimeInMinutes: number;
-  color: PlayerColor | null;
+  color: ClockPlayerColor | null;
 
-  constructor(startTimeInMinutes : number, incTimeInSeconds : number, color : PlayerColor | null = null){
+  constructor(startTimeInMinutes : number, incTimeInSeconds : number, color : ClockPlayerColor | null = null){
     this.startTimeInMinutes= startTimeInMinutes;
     this.timeInMilliSeconds= startTimeInMinutes * 60 * 1000; 
     this.incTimeInSeconds= incTimeInSeconds;
@@ -32,9 +32,14 @@ class ClockPlayer {
     return `${hI ? hS + " : " : ""}${mS + " : "}${sS}`;
   };
 
-  setColor = (color: PlayerColor)=>{
+  setColor = (color: ClockPlayerColor)=>{
     this.color = color;
     };
+
+    incTime = () => {
+      this.timeInMilliSeconds += this.incTimeInSeconds * 1000;
+    }
+
   }
 
 
@@ -81,17 +86,30 @@ class ClockConfig{
   }
 }
 
+
 const Clock: FC<ClockProps> = ({ config }) => {
+
   const [clockConfig, setClockConfig] = useState(new ClockConfig());
-  const stepInMilliSeconds = 100;
   
-  const ps = config.map(
+  const [players, setPlayers] = useState(config.map(
     (el) => new ClockPlayer(el.startTime, el.addiTime )
-  ) as [ClockPlayer, ClockPlayer];
+  ) as [ClockPlayer, ClockPlayer]);
 
-  const [players, setPlayers] = useState(ps);
+  const clockIntRef = useRef<ClockInterval | null>(null);
 
-  const clockRef = useRef<ClockInterval | null>(null);
+  const clockUpdateIntStep = 100;
+
+
+  // init clock interval
+  useEffect(() => {
+    clockIntRef.current = new ClockInterval(clockUpdateIntStep);
+    return () => {
+      if (clockIntRef.current) {
+        clockIntRef.current.stopInterval();
+      }
+    };
+  }, []);
+
 
 
   const initGame = (whiteId : number) => {
@@ -102,11 +120,11 @@ const Clock: FC<ClockProps> = ({ config }) => {
      */
     const updatedPlayers = players.map((el, id) => {
       if (id === whiteId) {
-        el.setColor("white" as PlayerColor);
+        el.setColor("white" as ClockPlayerColor);
       }
       else
       {
-        el.setColor("black" as PlayerColor);
+        el.setColor("black" as ClockPlayerColor);
       }
       return el;
     }) as [ClockPlayer, ClockPlayer];
@@ -120,12 +138,13 @@ const Clock: FC<ClockProps> = ({ config }) => {
 
 
 
+
   const activateClock = (turn : number) => {
     let lostId : number = 0;
-    let lostColor : PlayerColor | null = null;
+    let lostColor : ClockPlayerColor | null = null;
     const updatedPlayers = players.map((el, id) => {
       if (id === turn) {
-        el.timeInMilliSeconds -= stepInMilliSeconds;
+        el.timeInMilliSeconds -= clockUpdateIntStep;
       }
       if(el.timeInMilliSeconds <= 0){
         lostId = id;
@@ -142,78 +161,99 @@ const Clock: FC<ClockProps> = ({ config }) => {
       //todo: maybe add a counter for each player as 0-0.....
 
       console.log(`player ${lostId} with color ${lostColor} lost`);
-      clockRef.current?.stopInterval();
+      clockIntRef.current?.stopInterval();
     }
   };
 
-  useEffect(() => {
-    clockRef.current = new ClockInterval(stepInMilliSeconds);
-    return () => {
-      if (clockRef.current) {
-        clockRef.current.stopInterval();
-      }
-    };
-  }, []);
-
-  const incTime = (id: number) => {
-    const updatedPlayers = players.map((el, idd) => {
-      if (idd === id) {
-        el.timeInMilliSeconds += el.incTimeInSeconds * 1000;
-      }
-      return el;
-    }) as [ClockPlayer, ClockPlayer];
-    setPlayers(updatedPlayers);
-  };
 
 
-  const finishTurn = async () => {
-    const turnId = clockConfig.turnId;
-    await clockRef.current?.stopInterval();
-    await incTime(turnId);
+  const stopTurn = async () => {
+    await clockIntRef.current?.stopInterval();
   }
+
 
   const startTurn = async () => {
     const turnId = clockConfig.turnId;
-    await clockRef.current?.startInterval(()=>activateClock(turnId));
+    await clockIntRef.current?.startInterval(()=>activateClock(turnId));
   }
+
+
+
+
+
+
+
+  const playSoundEffect = (t : "click" | "timeout") => {
+    let stt = "/media/click.mp3";
+    if(t == "timeout"){
+      stt = "";
+    }
+    const audio = new Audio(stt);
+    audio.play();
+  }
+
+
+
+
+
+
+
+
 
 
 
   const clockBtnClick = async (t: number) => {
 
+    /**
+     * if game not started start game
+     */
     if (!clockConfig.isGameStarted) {
-      await initGame(t);
-      const audio = new Audio('/media/click.mp3');
-      audio.play();
 
+      // play sound effect
+      playSoundEffect("click");
+
+      // init colors and turns count
+      await initGame(t);
+
+      // set turn to the current player
       clockConfig.turnId = t;
       await setClockConfig(clockConfig);
 
+      // start turn
       await startTurn();
       return;
     }
 
 
-    console.log("ttt")
+    /**
+     * if game already started
+     */
+    // validate
     if (t !== clockConfig.turnId && clockConfig.isGameStarted) return;
 
-    console.log("ttt")
-    const audio = new Audio('/media/click.mp3');
-    audio.play();
+    // sound effect
+    playSoundEffect("click");
 
-    
-    finishTurn();
+    // finish old turn
+    stopTurn();
   
 
+    // inc player time
+    players[t].incTime();
+    setPlayers(players);
 
+
+    // if current player is black that means a new turn should be incremented
     if(players[t].color == "black"){
       clockConfig.incTurnsCount();
     }
 
-  
+    // switch turn to the other player
     clockConfig.switchTurnId();
     await setClockConfig(clockConfig);
 
+
+    // start turn
     await startTurn();
   };
 
