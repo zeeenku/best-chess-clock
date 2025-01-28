@@ -67,13 +67,22 @@ class ClockConfig{
   isGameStarted : boolean = false;
   turnId : number = -1;
   turnsCount : number = 0;
+
+  incTurnsCount(){
+    this.turnsCount++;
+  }
+
+  switchTurnId(){
+    this.turnId = this.turnId == 1 ? 0 : 1 ;
+  }
+
+  start(){
+    this.isGameStarted = true;
+  }
 }
 
 const Clock: FC<ClockProps> = ({ config }) => {
   const [clockConfig, setClockConfig] = useState(new ClockConfig());
-  // const [isGameStarted, setGameStarted] = useState(false);
-  // const [turnId, setTurnId] = useState(0);
-  // const [turnCount, setTurnCount] = useState(0);
   const stepInMilliSeconds = 100;
   
   const ps = config.map(
@@ -85,9 +94,14 @@ const Clock: FC<ClockProps> = ({ config }) => {
   const clockRef = useRef<ClockInterval | null>(null);
 
 
-  const startGame = (whiteId : number) => {
-    const updatedPlayers = players.map((el) => {
-      if (el.id === whiteId) {
+  const initGame = (whiteId : number) => {
+    /**
+     * make turn 0
+     * referee choose white and black
+     * and start
+     */
+    const updatedPlayers = players.map((el, id) => {
+      if (id === whiteId) {
         el.setColor("white" as PlayerColor);
       }
       else
@@ -95,10 +109,11 @@ const Clock: FC<ClockProps> = ({ config }) => {
         el.setColor("black" as PlayerColor);
       }
       return el;
-    });
+    }) as [ClockPlayer, ClockPlayer];
 
     setPlayers(updatedPlayers);
-    setGameStarted(true);
+    clockConfig.start();
+    setClockConfig(clockConfig);
     return;
   }
 
@@ -108,16 +123,16 @@ const Clock: FC<ClockProps> = ({ config }) => {
   const activateClock = (turn : number) => {
     let lostId : number = 0;
     let lostColor : PlayerColor | null = null;
-    const updatedPlayers = players.map((el) => {
-      if (el.id === turn) {
+    const updatedPlayers = players.map((el, id) => {
+      if (id === turn) {
         el.timeInMilliSeconds -= stepInMilliSeconds;
       }
       if(el.timeInMilliSeconds <= 0){
-        lostId = el.id;
+        lostId = id;
         lostColor = el.color;
       }
       return el;
-    });
+    }) as [ClockPlayer, ClockPlayer];
     setPlayers(updatedPlayers);
     if(lostId){
       //todo: send event to parent or show dialog already her
@@ -141,54 +156,65 @@ const Clock: FC<ClockProps> = ({ config }) => {
   }, []);
 
   const incTime = (id: number) => {
-    const updatedPlayers = players.map((el) => {
-      if (el.id === id) {
+    const updatedPlayers = players.map((el, idd) => {
+      if (idd === id) {
         el.timeInMilliSeconds += el.incTimeInSeconds * 1000;
       }
       return el;
-    });
+    }) as [ClockPlayer, ClockPlayer];
     setPlayers(updatedPlayers);
   };
 
-const incTurnCounter = (color : PlayerColor) => {
-  if(color == "black"){
-    setTurnCount(turnCount + 1);
-  }
-  return;
-}
-  const finishTurn = async (turnId : number) => {
+
+  const finishTurn = async () => {
+    const turnId = clockConfig.turnId;
     await clockRef.current?.stopInterval();
     await incTime(turnId);
   }
-  const startTurn = async (turnId : number) => {
+
+  const startTurn = async () => {
+    const turnId = clockConfig.turnId;
     await clockRef.current?.startInterval(()=>activateClock(turnId));
   }
-  const clockBtnClock = async (t: number) => {
 
-    if (!isGameStarted) {
-      startGame(t);
+
+
+  const clockBtnClick = async (t: number) => {
+
+    if (!clockConfig.isGameStarted) {
+      await initGame(t);
       const audio = new Audio('/media/click.mp3');
       audio.play();
-      await setTurnId(t);
-      await startTurn(t);
+
+      clockConfig.turnId = t;
+      await setClockConfig(clockConfig);
+
+      await startTurn();
       return;
     }
 
 
+    console.log("ttt")
+    if (t !== clockConfig.turnId && clockConfig.isGameStarted) return;
 
-    if (t !== turnId && isGameStarted) return;
-
-    
+    console.log("ttt")
     const audio = new Audio('/media/click.mp3');
     audio.play();
 
-    finishTurn(t);
-    incTurnCounter(players[t-1].color!);
+    
+    finishTurn();
+  
 
-    const nextTurn = t === 1 ? 2 : 1;
-    // increment turn here....
-    await setTurnId(nextTurn);
-    await startTurn(nextTurn);
+
+    if(players[t].color == "black"){
+      clockConfig.incTurnsCount();
+    }
+
+  
+    clockConfig.switchTurnId();
+    await setClockConfig(clockConfig);
+
+    await startTurn();
   };
 
 
@@ -200,14 +226,14 @@ const incTurnCounter = (color : PlayerColor) => {
             <div className="flex h-[10%] bg-red-500 justify-center items-center">
       </div>
       <div className="h-[15%] pt-5 w-full flex space-x-16 justify-around items-end">
-      {players.map((player) => (
-                 <h2 className="w-1/2 text-4xl text-center lg:text-4xl mb-3">Player {player.id}</h2>
+      {players.map((player, id) => (
+                 <h2 className="w-1/2 text-4xl text-center lg:text-4xl mb-3">Player {id}</h2>
       ))}
       </div>
       <div className={`${isHorizontal ? "h-[45dvh]" :  "h-[45dvw] " } pt-1 w-full flex items-center`}>
-        {players.map((player, index) => (
+        {players.map((player, id) => (
           <>
-          <div key={index} className="h-full w-6/12 flex flex-col items-center p-1 lg:px-5">
+          <div key={id} className="h-full w-6/12 flex flex-col items-center p-1 lg:px-5">
             <div className="flex lg:flex-col justify-center items-center ">
             {/* <h2 className="text-4xl lg:text-4xl mb-3">Player {player.id} {`${player.color ?? ""}`}</h2> */}
             {/* <h3 className="text-2xl mb-3">
@@ -215,17 +241,17 @@ const incTurnCounter = (color : PlayerColor) => {
             </h3> */}
             </div>
             <button
-              onClick={() => clockBtnClock(player.id)}
-              className={`${player.id !== turnId ? "active" : "finish-turn"} 
+              onClick={() => clockBtnClick(id)}
+              className={`${id !== clockConfig.turnId ? "active" : "finish-turn"} 
               clock-button w-full text-slate-900 text-4xl time
               `}
             >
               <span className="text-5xl">{player.getTimeFormatted()}</span>
             </button>
           </div>
-          { index == 0 ? 
+          { id == 0 ? 
           (<h2 className="text-3xl w-16 translate-y-1/4 text-center">
-            #{turnCount}
+            #{clockConfig.turnsCount}
             </h2> )
           : <></>}
           </>
@@ -233,17 +259,17 @@ const incTurnCounter = (color : PlayerColor) => {
       </div>
 
       <div className="mt-5 text-center text-2xl">
-        {isGameStarted ? (
+        {clockConfig.isGameStarted ? (
           <>
             <div className="h-[10%] w-full flex justify-center items-center">
-                  {players.map((player) => (
+                  {players.map((player, id) => (
                     <>
                             <h2 className="w-2/12 h-full flex items-center space-x-2 justify-center text-center  mb-3">
                             <span className="text-xl lg:text-2xl">{player.color}</span>
                             <span className="text-lg lg:text-xl">{player.startTimeInMinutes}+{player.incTimeInSeconds}</span>
                             </h2>
                             {
-                              (player.id == 1 ? 
+                              (id == 1 ? 
                                 <div className="w-[36%] h-full px-2">
                                   <button><RotateCcw/></button>
                                   <button><Pause/></button>
