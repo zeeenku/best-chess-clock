@@ -12,13 +12,11 @@ class ClockPlayer {
   incTimeInSeconds: number;
   startTimeInMinutes: number;
   color: PlayerColor | null;
-  id: number;
 
-  constructor(id : number, startTimeInMinutes : number, incTimeInSeconds : number, color : PlayerColor | null = null){
+  constructor(startTimeInMinutes : number, incTimeInSeconds : number, color : PlayerColor | null = null){
     this.startTimeInMinutes= startTimeInMinutes;
     this.timeInMilliSeconds= startTimeInMinutes * 60 * 1000; 
     this.incTimeInSeconds= incTimeInSeconds;
-    this.id= id;
     this.color = color;
   }
 
@@ -64,17 +62,25 @@ class ClockInterval {
   }
 }
 
+
+class ClockConfig{
+  isGameStarted : boolean = false;
+  turnId : number = -1;
+  turnsCount : number = 0;
+}
+
 const Clock: FC<ClockProps> = ({ config }) => {
-  const [isGameStarted, setGameStarted] = useState(false);
-  const [turnId, setTurnId] = useState(0);
-  const [turnCount, setTurnCount] = useState(0);
+  const [clockConfig, setClockConfig] = useState(new ClockConfig());
+  // const [isGameStarted, setGameStarted] = useState(false);
+  // const [turnId, setTurnId] = useState(0);
+  // const [turnCount, setTurnCount] = useState(0);
   const stepInMilliSeconds = 100;
   
-  const [players, setPlayers] = useState(
-    config.map(
-      (el) => new ClockPlayer(el.id, el.startTime, el.addiTime )
-    )
-  );
+  const ps = config.map(
+    (el) => new ClockPlayer(el.startTime, el.addiTime )
+  ) as [ClockPlayer, ClockPlayer];
+
+  const [players, setPlayers] = useState(ps);
 
   const clockRef = useRef<ClockInterval | null>(null);
 
