@@ -20,6 +20,9 @@ class ClockPlayer {
     this.color = color;
   }
 
+  restartTime(){
+    this.timeInMilliSeconds= this.startTimeInMinutes * 60 * 1000; 
+  }
   getTimeFormatted = () => {
     const t = this.timeInMilliSeconds;
     const time = Math.ceil(t / 1000);
@@ -187,8 +190,19 @@ const Clock: FC<ClockProps> = ({ config }) => {
 
   }
 
-  const restartGame = () => {
+  const restartClock = () => {
+    stopTurn();
 
+    // init players
+    const newPlayers = players.map((el)=>{
+          el.restartTime();
+          return el;
+        }) as [ClockPlayer , ClockPlayer];
+
+    setPlayers(newPlayers);
+
+
+    clockConfig.setGameStatus("notStarted" as ClockStatus);
   }
 
   const runClock = (turn : number) => {
@@ -234,8 +248,24 @@ const Clock: FC<ClockProps> = ({ config }) => {
 
 
 
+/*
+  btns click section
+*/
+
+const clickPausePlay = () => {
+  if(clockConfig.isGameStatus("pause" as ClockStatus)){
+    startClock();
+  }
+  else
+  {
+    pauseClock();
+  }
+}
 
 
+const clickRestart = () => {
+    restartClock();
+}
 
 
 
