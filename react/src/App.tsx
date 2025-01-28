@@ -147,6 +147,7 @@ function App() {
       {
         showClock ? <Clock config={players} /> : <></>
       }
+
       <AlertDialog  open={isDialogOpen}>
 
       <AlertDialogContent className="bg-slate-900 max-h-[90vh] overflow-x-hidden overflow-y-auto">
