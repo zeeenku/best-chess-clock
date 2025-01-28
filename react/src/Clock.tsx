@@ -219,10 +219,10 @@ const Clock: FC<ClockProps> = ({ config }) => {
     setClockConfig(clockConfig);
   }
 
-  const runClock = (turn : number) => {
+  const runClock = async (turn : number) => {
   
 
-    setPlayers( players.map((el, id)=>{
+    await setPlayers( players.map((el, id)=>{
       if(id == turn){
         el.timeInMilliSeconds -= clockUpdateIntStep;
       }
@@ -238,7 +238,7 @@ const Clock: FC<ClockProps> = ({ config }) => {
       //todo: and a btn of go back to config
       //todo: in case of return we would have to send an event again....
       //todo: maybe add a counter for each player as 0-0.....
-      looseGame(turn);
+      await looseGame(turn);
     }
   };
 
@@ -322,6 +322,7 @@ const clickRestart = () => {
       clockConfig.isGameStatus("active" as ClockStatus))
       return;
 
+      console.log("ttttt")
     // sound effect
     playSoundEffect("click");
 
@@ -348,6 +349,18 @@ const clickRestart = () => {
     await startTurn();
   };
 
+  /**isten for space keyboard clicks */
+  document.body.onkeydown = async (e) => {
+
+    if(
+      clockConfig.isGameStatus("active" as ClockStatus) && 
+    (e.key == " " || e.code == "Space"   )
+    ) {
+      e.preventDefault();
+      const t = clockConfig.turnId as number;
+      await clockBtnClick(t);
+    }
+  }
 
   const isHorizontal = window.innerWidth > window.innerHeight;
 
