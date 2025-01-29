@@ -372,7 +372,7 @@ const clickRestart = () => {
     <main className={`${isHorizontal ? 'w-[100dvw] h-[100dvh]' : 'w-[100dvh] h-[100dvw] rotate-90'} 
     py-3 lg:py-5 px-10 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 `}>
             
-      <div className="flex h-[10%] space-x-2 text-xl justify-center items-center">
+      <div className="flex h-[10%] space-x-14 text-xl justify-center items-center">
         <Button>Clear Score</Button>
         <h1>Best Chess Clock</h1>
         <Button>Download App</Button>
@@ -399,7 +399,12 @@ const clickRestart = () => {
                 Player {id+1} 
               </span>
 
-              <span className="absolute text-base font-medium lowercase rounded-md px-2 bg-brown text-white left-1/2 -translate-x-1/2 bottom-4">
+
+              <span className="absolute text-sm font-medium lowercase rounded-md px-1.5 bg-brown text-white right-6 bottom-6">
+                0 pts 
+              </span>
+
+              <span className="absolute text-sm font-medium lowercase rounded-md px-1.5 bg-brown text-white left-6  bottom-6">
                 {player.color} 
                 <span className="text-sm"> {player.startTimeInMinutes}+{player.incTimeInSeconds}</span>
               </span>
