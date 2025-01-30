@@ -392,19 +392,20 @@ const clickRestart = () => {
               onClick={() => clockBtnClick(id)}
               className={`${id !== clockConfig.turnId ? "active" : "finish-turn"} 
               clock-button w-full text-slate-900 text-2xl lg:text-4xl time relative
+              flex justify-between items-center flex-col
               `}
             >
 
-              <span className="absolute capitalize -translate-x-1/2 font-semibold rounded-md px-1.5 text-slate-900 text-2xl left-1/2 top-4">
+              <span className="block w-fit capitalize -translate-x-1/2 font-semibold rounded-md px-1.5 text-slate-900 text-2xl">
                 Player {id+1} 
               </span>
 
 
-              <span className="absolute text-sm font-medium lowercase rounded-md px-1.5 bg-brown text-white right-6 bottom-6">
+              <span className="block w-fit text-sm font-medium lowercase rounded-md px-1.5 bg-brown text-white">
                 0 pts 
               </span>
 
-              <span className="absolute text-sm font-medium lowercase rounded-md px-1.5 bg-brown text-white left-6  bottom-6">
+              <span className="block w-fit text-sm font-medium lowercase rounded-md px-1.5 bg-brown text-white">
                 {player.color} 
                 <span className="text-sm"> {player.startTimeInMinutes}+{player.incTimeInSeconds}</span>
               </span>
