@@ -412,7 +412,7 @@ const clickRestart = () => {
             </button>
           </div>
           { id == 0 ? 
-          (<h2 className="text-2xl w-16 translate-y-1/4 text-center">
+          (<h2 className="text-2xl w-20 md:w-16 translate-y-1/4 text-center">
             {clockConfig.getTurnsCountFormatted()}
             </h2> )
           : <></>}
