@@ -421,20 +421,23 @@ const clickRestart = () => {
       </div>
 
 
+      <div className="w-full h-[15%] pt-1 lg:pt-5 flex justify-center items-center px-2">
 
 {
   !clockConfig.isGameStatus("notStarted" as ClockStatus) ? 
-  <div className="w-full h-[15%] pt-1 lg:pt-5 flex justify-center items-center px-2">
+  <>
   <button onClick={clickRestart}><RotateCcw/></button>
   <button onClick={pausePlayClock}><Pause/></button>
   <button onClick={pausePlayClock}><Play/></button>
   <button onClick={()=>looseGame(0)}><X/></button>
 
-</div>
+  </>
   : 
-  <div className="h-[10%]"></div>
+  <h3 className="text-sm lg:text-lg w-fit mx-auto bg-brown h-fit rounded-md px-2">
+    The white to click a button & start the game
+  </h3>
 }
-    
+</div>
 
 
 
@@ -447,7 +450,7 @@ const clickRestart = () => {
             <span className="hidden md:inline">          Tip: You can press <span className="bg-slate-900 text-white rounded-lg px-1">enter</span> to switch turns
 </span>
           ) : (
-            <> The white to click a button & start the game</>
+            <></>
           )}
       
             
