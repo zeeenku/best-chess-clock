@@ -433,7 +433,7 @@ const clickRestart = () => {
 
   </>
   : 
-  <h3 className="text-sm lg:text-lg w-fit mx-auto bg-brown h-fit rounded-md px-2">
+  <h3 className="text-sm lg:text-lg w-fit mx-auto h-fit rounded-md px-2">
     The white to click a button & start the game
   </h3>
 }
@@ -445,9 +445,9 @@ const clickRestart = () => {
       <div className="text-xs h-[9%] items-end flex gap-1 px-3 lg:px-5 justify-between">
         <span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-amber-700">Zenku</a> (Enajjachi Zakariaa).</span>
 
-        <h3 className="text-sm lg:text-lg w-fit mx-auto bg-brown h-fit rounded-md px-2">
+        <h3 className="text-sm lg:text-lg w-fit mx-auto h-fit rounded-md px-2">
           {!clockConfig.isGameStatus("notStarted" as ClockStatus) ? (
-            <span className="hidden md:inline">          Tip: You can press <span className="bg-slate-900 text-white rounded-lg px-1">enter</span> to switch turns
+            <span className="hidden md:inline">          Tip: You can press <span className="bg-brown mt-1 text-base text-white rounded-lg px-1">enter</span> to switch turns
 </span>
           ) : (
             <></>
