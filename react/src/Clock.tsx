@@ -392,24 +392,28 @@ const clickRestart = () => {
               onClick={() => clockBtnClick(id)}
               className={`${id !== clockConfig.turnId ? "active" : "finish-turn"} 
               clock-button w-full text-slate-900 text-2xl lg:text-4xl time relative
-              flex justify-between items-center flex-col
+              flex justify-between items-center flex-col p-4 md:p-5
               `}
             >
 
-              <span className="block w-fit capitalize -translate-x-1/2 font-semibold rounded-md px-1.5 text-slate-900 text-2xl">
+              <span className="block w-fit capitalize font-semibold rounded-md text-center px-1.5 text-slate-900 text-xl md:text-2xl">
                 Player {id+1} 
               </span>
 
 
-              <span className="block w-fit text-sm font-medium lowercase rounded-md px-1.5 bg-brown text-white">
+            
+              <span className="text-2xl md:text-3xl">{player.getTimeFormatted()}</span>
+
+              <div className="w-full flex justify-between ">
+              <span className="block w-fit text-xs md:text-sm font-medium lowercase rounded-md px-1.5 bg-brown text-white">
                 0 pts 
               </span>
 
-              <span className="block w-fit text-sm font-medium lowercase rounded-md px-1.5 bg-brown text-white">
+              <span className="block w-fit text-xs md:text-sm font-medium lowercase rounded-md px-1.5 bg-brown text-white">
                 {player.color} 
-                <span className="text-sm"> {player.startTimeInMinutes}+{player.incTimeInSeconds}</span>
+                <span className="text-xs md:text-sm"> {player.startTimeInMinutes}+{player.incTimeInSeconds}</span>
               </span>
-              <span className="text-3xl">{player.getTimeFormatted()}</span>
+              </div>
             </button>
           </div>
           { id == 0 ? 
