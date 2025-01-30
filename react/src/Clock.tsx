@@ -382,7 +382,7 @@ const clickRestart = () => {
 
 
 
-      <div className={`h-[65%] pt-[4%] w-full  flex items-center`}>
+      <div className={`h-[61%] pt-[4%] w-full  flex items-center`}>
         {players.map((player, id) => (
           <>
           <div key={id} className="h-full w-6/12 flex flex-col items-center p-1 lg:px-5">
@@ -421,7 +421,7 @@ const clickRestart = () => {
       </div>
 
 
-      <div className="w-full h-[15%] pt-1 lg:pt-5 flex justify-center items-center px-2">
+      <div className="w-full pb-[4%] h-[20%] pt-6 lg:pt-8 flex justify-center items-center px-2">
 
 {
   !clockConfig.isGameStatus("notStarted" as ClockStatus) ? 
@@ -442,10 +442,10 @@ const clickRestart = () => {
 
 
 
-      <div className="text-xs h-[9%] items-end flex gap-1 px-3 lg:px-5 justify-between">
+      <div className="text-xs h-[10%] items-center flex gap-1 px-3 lg:px-5 justify-between">
         <span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-amber-700">Zenku</a> (Enajjachi Zakariaa).</span>
 
-        <h3 className="text-sm lg:text-lg w-fit mx-auto h-fit rounded-md px-2">
+        <h3 className="text-sm lg:text-base w-fit mx-auto h-fit rounded-md px-2">
           {!clockConfig.isGameStatus("notStarted" as ClockStatus) ? (
             <span className="hidden md:inline">          Tip: You can press <span className="bg-brown mt-1 text-base text-white rounded-lg px-1">enter</span> to switch turns
 </span>
