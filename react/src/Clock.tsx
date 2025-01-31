@@ -79,12 +79,17 @@ enum ClockStatus {
 };
 
 class ClockConfig{
-  gameStatus : ClockStatus = "notStarted";
+  gameStatus : ClockStatus = ClockStatus.notStarted;
   turnId : number = -1;
   turnsCount : number = 0;
 
+  setClock(gameStatus : ClockStatus, turnId : number, turnsCount : number){
+    this.gameStatus = gameStatus;
+    this.turnId = turnId;
+    this.turnsCount = turnsCount; 
+  }
   initClock(){
-    this.gameStatus = "notStarted" as ClockStatus;
+    this.gameStatus = ClockStatus.notStarted;
     this.turnId = -1;
     this.turnsCount = 0;  
   }
@@ -107,7 +112,7 @@ class ClockConfig{
   }
 
   start(){
-    this.setGameStatus("active" as ClockStatus);
+    this.setGameStatus(ClockStatus.active);
   }
 
   getTurnsCountFormatted(){
@@ -186,20 +191,36 @@ const Clock: FC<ClockProps> = ({ config }) => {
   }
 
 
-  const pauseClock = () => {
+  const pauseClock = async () => {
     stopTurn();
-    clockConfig.setGameStatus("paused" as ClockStatus);
+
+    await setClockConfig(prevConfig => {
+      const newConfig : ClockConfig = new ClockConfig();
+      newConfig.setClock(ClockStatus.paused, prevConfig.turnId , prevConfig.turnsCount);
+      return newConfig ;
+    });
+
+
   }
 
   const playClock = async () => {
-    await clockConfig.setGameStatus("active" as ClockStatus);
+    await setClockConfig(prevConfig => {
+    const newConfig : ClockConfig = new ClockConfig();
+    newConfig.setClock(ClockStatus.active, prevConfig.turnId , prevConfig.turnsCount);
+    return newConfig ;
+  });
+
+  
     await startTurn();
   }
 
   const looseGame = (looserId : number) => {
     stopTurn();
-    clockConfig.setGameStatus("finished" as ClockStatus);
-    //clockConfig.turnId
+    setClockConfig(prevConfig => {
+      const newConfig : ClockConfig = new ClockConfig();
+      newConfig.setClock(ClockStatus.finished, prevConfig.turnId , prevConfig.turnsCount);
+      return newConfig ;
+    });
     setClockConfig(clockConfig);
     //todo : use it for game result component
     alert(`player ${looserId+1} has lost`);
@@ -275,7 +296,7 @@ const Clock: FC<ClockProps> = ({ config }) => {
 */
 
 const pausePlayClock = () => {
-  if(clockConfig.isGameStatus("paused" as ClockStatus)){
+  if(clockConfig.isGameStatus(ClockStatus.paused)){
     playClock();
   }
   else
@@ -300,7 +321,7 @@ const clickRestart = () => {
     /**
      * if game not started start game
      */
-    if (clockConfig.isGameStatus("notStarted" as ClockStatus)) {
+    if (clockConfig.isGameStatus(ClockStatus.notStarted)) {
 
       // play sound effect
       playSoundEffect("click");
@@ -323,7 +344,7 @@ const clickRestart = () => {
      */
     // validate
     if (t !== clockConfig.turnId && 
-      clockConfig.isGameStatus("active" as ClockStatus))
+      clockConfig.isGameStatus(ClockStatus.active))
       return;
 
       console.log("ttttt")
@@ -357,7 +378,7 @@ const clickRestart = () => {
   document.body.onkeydown = async (e) => {
 
     if(
-      clockConfig.isGameStatus("active" as ClockStatus) && 
+      clockConfig.isGameStatus(ClockStatus.active) && 
     (e.key == " " || e.code == "Space"   )
     ) {
       e.preventDefault();
@@ -426,15 +447,31 @@ const clickRestart = () => {
       </div>
 
 
-      <div className="w-full pb-[4%] h-[20%] pt-6 lg:pt-8 flex justify-center items-center px-2">
+      <div className="w-full pb-[4%] h-[20%] pt-6 lg:pt-8 flex space-x-2 justify-center items-center px-2">
 
 {
-  !clockConfig.isGameStatus("notStarted" as ClockStatus) ? 
+  !clockConfig.isGameStatus(ClockStatus.notStarted) ? 
   <>
-  <button onClick={clickRestart}><RotateCcw/></button>
-  <button onClick={pausePlayClock}><Pause/></button>
-  <button onClick={pausePlayClock}><Play/></button>
-  <button onClick={()=>looseGame(0)}><X/></button>
+  <button onClick={clickRestart} className="bg-[#f5e0d5] font-medium w-24 text-slate-900 text-sm items-center justify-center flex px-2 rounded-full">
+    <RotateCcw className="w-4" />
+    <span className="text-sm ps-1"
+    >restart</span>
+    </button>
+  <button onClick={pausePlayClock}
+    className="bg-[#f5e0d5] font-medium text-slate-900 text-sm items-center justify-center flex p-2 rounded-full"
+  >
+  {
+    clockConfig.isGameStatus(ClockStatus.active) ? 
+    <Pause className="fill-slate-900"/> :
+    <Play className="fill-slate-900"/>
+}
+  </button>
+
+  <button onClick={()=>looseGame(0)} className="bg-[#f5e0d5] font-medium w-24 text-slate-900 text-sm items-center justify-center flex px-2 rounded-full">
+    <X className="w-4" />
+    <span className="text-xs ps-1"
+    >end game</span>
+    </button>
 
   </>
   : 
@@ -451,7 +488,7 @@ const clickRestart = () => {
         <span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-amber-700">Zenku</a> (Enajjachi Zakariaa).</span>
 
         <h3 className="text-sm lg:text-base w-fit mx-auto h-fit rounded-md px-2">
-          {!clockConfig.isGameStatus("notStarted" as ClockStatus) ? (
+          {!clockConfig.isGameStatus(ClockStatus.notStarted) ? (
             <span className="hidden md:inline">          Tip: You can press <span className="bg-brown mt-1 text-base text-white rounded-lg px-1">enter</span> to switch turns
 </span>
           ) : (
