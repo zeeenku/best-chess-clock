@@ -253,8 +253,70 @@ const notify = (title : string) => {
     notify("The chess clock is playing now.");
   }
 
+  interface GameResultPlayer{
+      timeInMilliSeconds: number;
+      incTimeInSeconds: number;
+      color: ClockPlayerColor;
+}
+
+class ClockHistory{
+  constructor(){
+    this.data = JSON.parse(localStorage.getItem("chess-clock-history"));
+  }
+  add(el : GameResult){
+    if(el.looserId == -1){
+      this.data.results[0] += 0.5;
+      this.data.results[1] += 0.5;
+    }
+    else
+    {
+      this.data.results[looserId == 0 ? 1 : 0] += 1;
+    }
+    this.data.history.unshift(el);
+  }
+  save(){
+    localStorage.setItem("chess-clock-history", JSON.stringify(this.data));
+  }
+  clear(){
+    localStorage.removeItem("chess-clock-history");
+  }
+}
+  class GameResult{
+    players;
+    constructor(ps : [ClockPlayer,ClockPlayer], clockConf: ClockConfig, looserId: number, resultMadeBy : string){
+
+      let totalPlayTimeInMilliSeconds = 0;
+
+
+      this.players = ps.map((e,id)=>{
+        let playerTurns = clockConf.turnsCount;
+        playerTurns += e.color == "white" && clockConf.turnId == id ? 1 : 0 ;
+
+        const totalPlayerTimeInMilliSeconds = e.startTimeInMinutes * 60 * 1000 - e.timeInMilliSeconds - (playerTurns*e.incTimeInSeconds*1000);
+        totalPlayTimeInMilliSeconds += totalPlayerTimeInMilliSeconds;
+        const el = {
+          color : e.color,
+          format : `${e.startTimeInMinutes}+${e.incTimeInSeconds}`,
+          totalTimeInSeconds : (totalPlayerTimeInMilliSeconds/1000).toFixed(2),
+          totalTurns : playerTurns,
+        };
+        return el;
+      })
+
+      this.looserId = looserId; // result only 0,1,or -1 in case of draw
+      this.resultMadeBy = resultMadeBy; // only timer or checkmate
+      if(looserId == -1){
+        this.resultMadeBy = "Decision or Stalemate";
+      }
+      this.turnsCount = clockConf.turnsCount;
+      this.gameTotalTime = (totalPlayTimeInMilliSeconds/1000).toFixed(2);
+      this.gameEndTime = (new Date()).getTime();
+
+    }
+  }
+
   const looseGame = (looserId : number) => {
-    
+
     stopTurn();
 
     setClockConfig(prevConfig => {
