@@ -4,6 +4,14 @@ import {RotateCcw,Pause,Play, X} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "./components/ui/toaster2";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 enum ClockPlayerColor {
   black = "black",
@@ -164,7 +172,14 @@ const Clock: FC<ClockProps> = ({ config }) => {
    * clock functionnalities section
    */
 
+const notify = (title : string) => {
+  toast({
+    duration:2000,
+    title : title
+  });
 
+  (new Audio("/media/notif.wav")).play();
+}
   const initGame = (whiteId : number) => {
     /**
      * make turn 0
@@ -207,9 +222,7 @@ const Clock: FC<ClockProps> = ({ config }) => {
       return newConfig ;
     });
 
-    toast({
-      title: "The chess clock is paused now.",
-    })
+    notify("The chess clock is paused now.");
   }
 
   const playClock = async () => {
@@ -222,10 +235,7 @@ const Clock: FC<ClockProps> = ({ config }) => {
 
   
     await startTurn();
-    toast({
-      title: "The chess clock is playing now.",
-    })
-    console.log("hhhhh")
+    notify("The chess clock is playing now.");
   }
 
   const looseGame = (looserId : number) => {
@@ -357,11 +367,16 @@ const clickRestart = () => {
      * if game already started
      */
     // validate
-    if (t !== clockConfig.turnId && 
+
+    if(!clockConfig.isGameStatus(ClockStatus.active)){
+      notify("The chess clock is paused!");
+      return;
+    }
+    if ( (t !== clockConfig.turnId && 
       clockConfig.isGameStatus(ClockStatus.active))
+    )
       return;
 
-      console.log("ttttt")
     // sound effect
     playSoundEffect("click");
 
@@ -408,7 +423,7 @@ const clickRestart = () => {
     py-3 lg:py-5 px-10 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 `}>
             
             <div className="w-1/2">
-            < Toaster />
+            <Toaster  />
             </div>
       <div className="flex h-[10%] space-x-14 text-xl justify-center items-center">
         <Button>Clear Score</Button>
@@ -469,6 +484,8 @@ const clickRestart = () => {
 {
   !clockConfig.isGameStatus(ClockStatus.notStarted) ? 
   <>
+  
+
   <button onClick={clickRestart} className="bg-[#f5e0d5] font-medium w-24 text-slate-900 text-sm items-center justify-center flex px-2 rounded-full">
     <RotateCcw className="w-4" />
     <span className="text-sm ps-1"
