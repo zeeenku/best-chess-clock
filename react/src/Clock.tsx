@@ -446,9 +446,9 @@ const clickRestart = () => {
             <Toaster  />
             </div>
       <div className="flex h-[10%] space-x-14 text-xl justify-center items-center">
-        <Button>Clear Score</Button>
+        <Button className="bg-semi-brown hover:bg-semi-brown text-slate-900 w-32">Share App</Button>
         <h1>The Best Chess Clock</h1>
-        <Button>Download App</Button>
+        <Button className="bg-light-brown hover:bg-light-brown text-slate-900 w-32">Download Now</Button>
       </div>
 
 
@@ -512,14 +512,14 @@ const clickRestart = () => {
     >restart</span>
     </button>
   </AlertDialogTrigger>
-<AlertDialogContent className="bg-slate-900 max-h-[90vh] overflow-x-hidden overflow-y-auto">
+<AlertDialogContent className={`${!isHorizontal ? "rotate-90" : ""} bg-slate-900 max-h-[90vh] overflow-x-hidden overflow-y-auto`}>
   <AlertDialogHeader>
     <AlertDialogTitle className="capitalize text-center">Chess Clock Alert</AlertDialogTitle>
     <h1 className="text-gray-300 text-center py-7 w-9/12 mx-auto">
       <h1>Are you sure you want to restart the clock & the game?</h1>
     </h1>
   </AlertDialogHeader>
-  <AlertDialogFooter>
+  <AlertDialogFooter className="flex-row justify-end space-x-2">
     <AlertDialogCancel>
       <Button className="bg-light-brown hover:bg-light-brown text-slate-900">Cancel</Button>
     </AlertDialogCancel>
@@ -549,14 +549,14 @@ const clickRestart = () => {
     >end game</span>
     </button>
   </DialogTrigger>
-<DialogContent className="bg-slate-900 max-h-[90vh] overflow-x-hidden overflow-y-auto">
+<DialogContent className={`${!isHorizontal ? "rotate-90" : ""} bg-slate-900 max-h-[90vh] overflow-x-hidden overflow-y-auto`}>
   <DialogHeader>
     <DialogTitle className="capitalize text-center">Chess Clock Alert</DialogTitle>
     <h1 className="text-gray-300 text-center pt-10 pb-5 w-9/12 mx-auto">
       <h1>How did the game end?</h1>
     </h1>
   </DialogHeader>
-  <DialogFooter className="justify-center sm:justify-center flex h-[4rem] items-center">
+  <DialogFooter className="justify-center sm:justify-center flex-row flex space-x-4 items-center">
     <DialogClose asChild>
     <Button onClick={() => looseGame(1)} className="bg-semi-brown hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal text-slate-900">
       Player 1 {players[0].color} won
