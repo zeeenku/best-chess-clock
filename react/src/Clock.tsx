@@ -590,7 +590,7 @@ const clickRestart = () => {
 
 
       <div className="text-xs h-[10%] items-center flex gap-1 px-3 lg:px-5 justify-between">
-        <span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-amber-700">Zenku</a> (Enajjachi Zakariaa).</span>
+        <span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-semi-brown">Zenku</a> (Enajjachi Zakariaa).</span>
 
         <h3 className="text-sm lg:text-base w-fit mx-auto h-fit rounded-md px-2">
           {!clockConfig.isGameStatus(ClockStatus.notStarted) ? (
@@ -603,7 +603,7 @@ const clickRestart = () => {
             
             </h3>
 
-          <span className="text-gray-300 text-center">You can read the code (<a href="https://github.com/zeeenku/best-chess-clock" className="underline text-amber-700">repo</a>)</span>
+          <span className="text-gray-300 text-center">You can read the code (<a href="https://github.com/zeeenku/best-chess-clock" className="underline text-semi-brown">repo</a>)</span>
         </div>
 
     </main>

@@ -50,6 +50,13 @@ body{
 .hover:bg-light-brown:hover{
   background-color: #fcf7f5;
 }
+
+.text-semi-brown{
+  color: #d5aa92;
+}
+.text-light-brown{
+  color: #fcf7f5;
+}
 .clock-button {
   position: relative;
   cursor: pointer;
