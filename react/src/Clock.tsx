@@ -2,6 +2,9 @@ import { ClockProps } from "@/types";
 import { FC, useState, useEffect, useRef } from "react";
 import {RotateCcw,Pause,Play, X} from "lucide-react";
 import {Button} from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { Toaster } from "./components/ui/toaster2";
+
 enum ClockPlayerColor {
   black = "black",
   white = "white"
@@ -126,6 +129,10 @@ const Clock: FC<ClockProps> = ({ config }) => {
   /**
    * cock logic objects declarations section
    */
+
+  const { toast } = useToast()
+
+
   const [clockConfig, setClockConfig] = useState(new ClockConfig());
 
 
@@ -200,7 +207,9 @@ const Clock: FC<ClockProps> = ({ config }) => {
       return newConfig ;
     });
 
-
+    toast({
+      title: "The chess clock is paused now.",
+    })
   }
 
   const playClock = async () => {
@@ -208,10 +217,15 @@ const Clock: FC<ClockProps> = ({ config }) => {
     const newConfig : ClockConfig = new ClockConfig();
     newConfig.setClock(ClockStatus.active, prevConfig.turnId , prevConfig.turnsCount);
     return newConfig ;
-  });
+  }); 
+
 
   
     await startTurn();
+    toast({
+      title: "The chess clock is playing now.",
+    })
+    console.log("hhhhh")
   }
 
   const looseGame = (looserId : number) => {
@@ -393,6 +407,9 @@ const clickRestart = () => {
     <main className={`${isHorizontal ? 'w-[100dvw] h-[100dvh]' : 'w-[100dvh] h-[100dvw] rotate-90'} 
     py-3 lg:py-5 px-10 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 `}>
             
+            <div className="w-1/2">
+            < Toaster />
+            </div>
       <div className="flex h-[10%] space-x-14 text-xl justify-center items-center">
         <Button>Clear Score</Button>
         <h1>Best Chess Clock</h1>
