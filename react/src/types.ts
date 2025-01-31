@@ -10,4 +10,5 @@ export type Player = {
 
 export interface ClockProps {
     config : [Player, Player],
+    onReturnToHome : CallableFunction,
 };

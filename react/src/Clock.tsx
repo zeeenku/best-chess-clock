@@ -23,7 +23,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 
-import { AlertDialogCancel, AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
+import { AlertDialogCancel, AlertDialogDescription, AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 
 enum ClockPlayerColor {
   black = "black",
@@ -144,7 +144,7 @@ class ClockConfig{
 }
 
 
-const Clock: FC<ClockProps> = ({ config }) => {
+const Clock: FC<ClockProps> = ({ config, onReturnToHome }) => {
 
   /**
    * cock logic objects declarations section
@@ -184,6 +184,9 @@ const Clock: FC<ClockProps> = ({ config }) => {
    * clock functionnalities section
    */
 
+  const returnHome = () => {
+    onReturnToHome();
+  }
 const notify = (title : string) => {
   toast({
     duration:2000,
@@ -251,22 +254,20 @@ const notify = (title : string) => {
   }
 
   const looseGame = (looserId : number) => {
+    
     stopTurn();
-    const draw = looserId === -1;
-    if(draw){
-      alert(`The game ended in a draw`);
 
-      return;
-    }
     setClockConfig(prevConfig => {
       const newConfig : ClockConfig = new ClockConfig();
       newConfig.setClock(ClockStatus.finished, prevConfig.turnId , prevConfig.turnsCount);
       return newConfig ;
     });
-    setClockConfig(clockConfig);
-    //todo : use it for game result component
-    alert(`player ${looserId+1} has lost`);
-    restartClock();
+
+    const draw = looserId === -1;
+    if(draw){
+      return;
+    }
+
   }
 
   const restartClock = () => {
@@ -442,9 +443,40 @@ const clickRestart = () => {
     <main className={`${isHorizontal ? 'w-[100dvw] h-[100dvh]' : 'w-[100dvh] h-[100dvw] rotate-90'} 
     py-3 lg:py-5 px-10 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 `}>
             
-            <div className="w-1/2">
             <Toaster  />
-            </div>
+
+
+
+
+            <AlertDialog  open={clockConfig.isGameStatus(ClockStatus.finished)}>
+
+    <AlertDialogContent className="bg-slate-900 max-h-[90vh] overflow-x-hidden overflow-y-auto">
+      <AlertDialogHeader>
+        <AlertDialogTitle className="capitalize text-center">The best chess clock</AlertDialogTitle>
+        <AlertDialogDescription className="text-gray-300 text-center">
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+
+      <div className="flex h-[10%] space-x-14 text-xl justify-center items-center">
+        Game Finished
+      </div>
+
+      <AlertDialogFooter className="flex-row justify-end space-x-2">
+
+      <Button className="bg-light-brown hover:bg-light-brown text-slate-900">Clear Score</Button>
+
+      <AlertDialogAction className="bg-semi-brown hover:bg-semi-brown text-slate-900" onClick={returnHome}
+      
+      >Return Home</AlertDialogAction>
+
+    <AlertDialogAction className="bg-semi-brown hover:bg-semi-brown text-slate-900" onClick={clickRestart}>Start New Game</AlertDialogAction>
+  </AlertDialogFooter>
+      </AlertDialogContent>
+      </AlertDialog>
+  
+
+
+
       <div className="flex h-[10%] space-x-14 text-xl justify-center items-center">
         <Button className="bg-semi-brown hover:bg-semi-brown text-slate-900 w-32">Share App</Button>
         <h1>The Best Chess Clock</h1>

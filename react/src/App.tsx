@@ -145,7 +145,7 @@ function App() {
     <>
 
       {
-        showClock ? <Clock config={players} /> : <></>
+        showClock ? <Clock config={players} onReturnToHome={()=>{setDialogOpen(true); setShowClock(false);}} /> : <></>
       }
 
       <AlertDialog  open={isDialogOpen}>
