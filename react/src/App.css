@@ -31,6 +31,25 @@ body{
   background-color:#302621;
 }
 
+.hover:bg-brown:hover{
+  background-color:#302621;
+}
+
+
+.bg-semi-brown{
+  background-color: #d5aa92;
+}
+.hover:bg-semi-brown:hover{
+  background-color: #d5aa92;
+}
+
+.bg-light-brown{
+  background-color: #fcf7f5;
+}
+
+.hover:bg-light-brown:hover{
+  background-color: #fcf7f5;
+}
 .clock-button {
   position: relative;
   cursor: pointer;

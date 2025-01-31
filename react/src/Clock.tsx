@@ -9,9 +9,11 @@ import {
   AlertDialogAction,
   AlertDialogContent,
   AlertDialogDescription,
+  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { AlertDialogCancel, AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 
 enum ClockPlayerColor {
   black = "black",
@@ -266,6 +268,8 @@ const notify = (title : string) => {
 
     clockConfig.initClock();
     setClockConfig(clockConfig);
+    notify("The chess clock has been restarted.");
+
   }
 
   const runClock = async (turn : number) => {
@@ -484,13 +488,32 @@ const clickRestart = () => {
 {
   !clockConfig.isGameStatus(ClockStatus.notStarted) ? 
   <>
-  
-
-  <button onClick={clickRestart} className="bg-[#f5e0d5] font-medium w-24 text-slate-900 text-sm items-center justify-center flex px-2 rounded-full">
+      <AlertDialog >
+  <AlertDialogTrigger asChild>
+  <button onClick={clockConfig.isGameStatus(ClockStatus.active) ? pauseClock : ()=>{}} className="bg-[#f5e0d5] font-medium w-24 text-slate-900 text-sm items-center justify-center flex px-2 rounded-full">
     <RotateCcw className="w-4" />
     <span className="text-sm ps-1"
     >restart</span>
     </button>
+  </AlertDialogTrigger>
+<AlertDialogContent className="bg-slate-900 max-h-[90vh] overflow-x-hidden overflow-y-auto">
+  <AlertDialogHeader>
+    <AlertDialogTitle className="capitalize text-center">Chess Clock Alert</AlertDialogTitle>
+    <h1 className="text-gray-300 text-center py-7 w-9/12 mx-auto">
+      <h1>Are you sure you want to restart the clock & the game?</h1>
+    </h1>
+  </AlertDialogHeader>
+  <AlertDialogFooter>
+    <AlertDialogCancel>
+      <Button className="bg-light-brown hover:bg-light-brown text-slate-900">Cancel</Button>
+    </AlertDialogCancel>
+    <AlertDialogAction className="bg-semi-brown hover:bg-semi-brown text-slate-900" onClick={clickRestart}>I am sure</AlertDialogAction>
+  </AlertDialogFooter>
+  </AlertDialogContent>
+
+  </AlertDialog>
+
+
   <button onClick={pausePlayClock}
     className="bg-[#f5e0d5] font-medium text-slate-900 text-sm items-center justify-center flex p-2 rounded-full"
   >
