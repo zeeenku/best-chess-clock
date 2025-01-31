@@ -558,17 +558,19 @@ const clickRestart = () => {
   </DialogHeader>
   <DialogFooter className="justify-center sm:justify-center flex-row flex space-x-4 items-center">
     <DialogClose asChild>
-    <Button onClick={() => looseGame(1)} className="bg-semi-brown hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal text-slate-900">
+    <Button onClick={() => looseGame(1)} 
+    className={`${players[0].color == "white" ? "bg-light-brown text-slate-900"  : "bg-brown text-white" } hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal`}>
       Player 1 {players[0].color} won
     </Button>
     </DialogClose>
     <DialogClose asChild>
-    <Button onClick={() => looseGame(-1)} className="bg-light-brown hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal text-slate-900">
+    <Button onClick={() => looseGame(-1)} className="bg-semi-brown hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal text-slate-900">
       Draw
     </Button>
     </DialogClose>
     <DialogClose asChild>
-    <Button onClick={() => looseGame(0)} className="bg-brown hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal text-white">
+    <Button onClick={() => looseGame(0)} 
+        className={`${players[1].color == "white" ? "bg-light-brown text-slate-900"  : "bg-brown text-white" } hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal `}>
       Player 2 {players[1].color} won
     </Button>
     </DialogClose>
