@@ -8,11 +8,21 @@ import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogClose,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 import { AlertDialogCancel, AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 
 enum ClockPlayerColor {
@@ -242,6 +252,12 @@ const notify = (title : string) => {
 
   const looseGame = (looserId : number) => {
     stopTurn();
+    const draw = looserId === -1;
+    if(draw){
+      alert(`The game ended in a draw`);
+
+      return;
+    }
     setClockConfig(prevConfig => {
       const newConfig : ClockConfig = new ClockConfig();
       newConfig.setClock(ClockStatus.finished, prevConfig.turnId , prevConfig.turnsCount);
@@ -431,7 +447,7 @@ const clickRestart = () => {
             </div>
       <div className="flex h-[10%] space-x-14 text-xl justify-center items-center">
         <Button>Clear Score</Button>
-        <h1>Best Chess Clock</h1>
+        <h1>The Best Chess Clock</h1>
         <Button>Download App</Button>
       </div>
 
@@ -524,11 +540,43 @@ const clickRestart = () => {
 }
   </button>
 
-  <button onClick={()=>looseGame(0)} className="bg-[#f5e0d5] font-medium w-24 text-slate-900 text-sm items-center justify-center flex px-2 rounded-full">
+
+    <Dialog >
+  <DialogTrigger asChild>
+    <button onClick={clockConfig.isGameStatus(ClockStatus.active) ? pauseClock : ()=>{}} className="bg-[#f5e0d5] font-medium w-24 text-slate-900 text-sm items-center justify-center flex px-2 rounded-full">
     <X className="w-4" />
     <span className="text-xs ps-1"
     >end game</span>
     </button>
+  </DialogTrigger>
+<DialogContent className="bg-slate-900 max-h-[90vh] overflow-x-hidden overflow-y-auto">
+  <DialogHeader>
+    <DialogTitle className="capitalize text-center">Chess Clock Alert</DialogTitle>
+    <h1 className="text-gray-300 text-center pt-10 pb-5 w-9/12 mx-auto">
+      <h1>How did the game end?</h1>
+    </h1>
+  </DialogHeader>
+  <DialogFooter className="justify-center sm:justify-center flex h-[4rem] items-center">
+    <DialogClose asChild>
+    <Button onClick={() => looseGame(1)} className="bg-semi-brown hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal text-slate-900">
+      Player 1 {players[0].color} won
+    </Button>
+    </DialogClose>
+    <DialogClose asChild>
+    <Button onClick={() => looseGame(-1)} className="bg-light-brown hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal text-slate-900">
+      Draw
+    </Button>
+    </DialogClose>
+    <DialogClose asChild>
+    <Button onClick={() => looseGame(0)} className="bg-brown hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal text-white">
+      Player 2 {players[1].color} won
+    </Button>
+    </DialogClose>
+</DialogFooter>
+
+  </DialogContent>
+
+  </Dialog>
 
   </>
   : 
