@@ -14,6 +14,11 @@ export interface ClockProps {
 };
 
 
+export interface ClockResultGridProps {
+    data : ClockGameResult,
+};
+
+
 
 
 
@@ -210,7 +215,7 @@ export class ClockGameResult {
         let playerTurns = clockConf.turnsCount;
         playerTurns += e.color === "white" && clockConf.turnId === id ? 1 : 0;
 
-        const totalPlayerTimeInMilliSeconds = e.startTimeInMinutes * 60 * 1000 - e.timeInMilliSeconds - (playerTurns * e.incTimeInSeconds * 1000);
+        const totalPlayerTimeInMilliSeconds = e.startTimeInMinutes * 60 * 1000 - e.timeInMilliSeconds + (playerTurns * e.incTimeInSeconds * 1000);
         totalPlayTimeInMilliSeconds += totalPlayerTimeInMilliSeconds;
 
         const el: ClockGameResultPlayer = {

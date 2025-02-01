@@ -2,8 +2,11 @@ import { ClockConfig, ClockGameResult, ClockGameResultReasons, ClockGameResults,
 import { FC, useState, useEffect, useRef } from "react";
 import {RotateCcw,Pause,Play, X} from "lucide-react";
 import {Button} from "@/components/ui/button";
+import ClockResultGrid from './ClockResultGrid';
+
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "./components/ui/toaster2";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -340,6 +343,10 @@ const clickRestart = () => {
       <div className="flex h-[10%] space-x-14 text-xl justify-center items-center">
         Game Finished
       </div>
+
+  <div>
+    <ClockResultGrid data={gameResult!}/>
+  </div>
 
       <AlertDialogFooter className="flex-row justify-end space-x-2">
 
