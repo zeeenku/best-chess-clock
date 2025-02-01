@@ -340,9 +340,7 @@ const clickRestart = () => {
         </AlertDialogDescription>
       </AlertDialogHeader>
 
-      <div className="flex h-[10%] space-x-14 text-xl justify-center items-center">
-        Game Finished
-      </div>
+
 
   <div>
     <ClockResultGrid data={gameResult!}/>

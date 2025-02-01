@@ -5,6 +5,7 @@ const ClockResultGrid: FC<ClockResultGridProps> = ({ data }) => {
 
 
   const history = (new ClockHistory()).data;
+  
 /**
  * 
  * playerslooserIdturnsCountgameTotalTimegameEndTimeresultMadeBy
@@ -12,25 +13,38 @@ const ClockResultGrid: FC<ClockResultGridProps> = ({ data }) => {
  */
   return(
     <>
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center text-3xl">
       Final result
     </div>    
     
-    <div className="flex items-center justify-center">
-      #{data.turnsCount} Turns in {data.gameTotalTime}s
-    </div>
-    
-    <div className="flex items-center justify-center">
+
+    <div className="flex items-center justify-around text-center my-4">
 
       <div>
-        <div>Player 1</div>
+        <div className="text-xl">Player 1</div>
         <div className={`${ data.looserId !== 0 ? "text-lime-500" : "text-red-500" }`}>{history.results[0]}</div>
+
+        <div className={`${ data.looserId !== 0 ? "text-lime-500" : "text-red-500" }`}>
+        7+1
+        </div>
+
+        <div>{data.players[0].color} {data.players[0].format}</div>
+        #{data.players[0].totalTurns} Turns in {data.players[0].totalTimeInSeconds}s
+
       </div>
 
 
       <div>
-        <div>Player 2</div>
+        <div className="text-xl">Player 2</div>
         <div className={`${ data.looserId !== 1 ? "text-lime-500" : "text-red-500" }`}>{history.results[1]}</div>
+        <div className={`${ data.looserId !== 1 ? "text-lime-500" : "text-red-500" }`}>
+        4+0
+        </div>
+
+        <div>{data.players[1].color} {data.players[1].format}</div>
+<div >      
+    #{data.players[1].totalTurns} Turns in {data.players[1].totalTimeInSeconds}s
+  </div>
       </div>
 
       </div>
@@ -38,21 +52,25 @@ const ClockResultGrid: FC<ClockResultGridProps> = ({ data }) => {
       <div className="flex items-center justify-center">
 
 <div>
-  <div>{data.players[0].color} {data.players[0].format}</div>
   <div >      
-    #{data.players[0].totalTurns} Turns in {data.players[0].totalTimeInSeconds}s
   </div>
 </div>
 
 
 <div>
-<div>{data.players[1].color} {data.players[1].format}</div>
-<div >      
-    #{data.players[1].totalTurns} Turns in {data.players[1].totalTimeInSeconds}s
-  </div>
+
 
     </div>
+
+    
     </div>
+
+    <div className="flex items-center justify-center">
+      <div className="px-1 bg-light-brown rounded-md text-slate-900 text-sm">      #{data.turnsCount} Turns in {data.gameTotalTime}s
+        <div>{data.gameTotalTime/data.turnsCount}s/turn</div>
+      </div>
+    </div>
+    
     </>
   );
 }
