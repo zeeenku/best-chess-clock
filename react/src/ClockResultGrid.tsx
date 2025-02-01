@@ -17,7 +17,7 @@ const ClockResultGrid: FC<ClockResultGridProps> = ({ data }) => {
     </div>    
     
     <div className="flex items-center justify-center">
-      #{data.turnsCount} Turns in {data.gameTotalTime}
+      #{data.turnsCount} Turns in {data.gameTotalTime}s
     </div>
     
     <div className="flex items-center justify-center">
@@ -32,7 +32,26 @@ const ClockResultGrid: FC<ClockResultGridProps> = ({ data }) => {
         <div>Player 2</div>
         <div className={`${ data.looserId !== 1 ? "text-lime-500" : "text-red-500" }`}>{history.results[1]}</div>
       </div>
-      {Object.keys(data)}
+
+      </div>
+
+      <div className="flex items-center justify-center">
+
+<div>
+  <div>{data.players[0].color} {data.players[0].format}</div>
+  <div >      
+    #{data.players[0].totalTurns} Turns in {data.players[0].totalTimeInSeconds}s
+  </div>
+</div>
+
+
+<div>
+<div>{data.players[1].color} {data.players[1].format}</div>
+<div >      
+    #{data.players[1].totalTurns} Turns in {data.players[1].totalTimeInSeconds}s
+  </div>
+
+    </div>
     </div>
     </>
   );
