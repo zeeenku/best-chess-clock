@@ -183,16 +183,27 @@ export class ClockHistory {
     }
 }
 
+export enum ClockGameResults{
+    player_1_lost = 0,
+    player_2_lost = 1, 
+    draw = -1
+}
 
-class ClockGameResult {
+export enum ClockGameResultReasons{
+    timeOut = "Time Out",
+    draw = "Decision or Stalemate",
+    checkmate = "Checkmate"
+}
+
+export class ClockGameResult {
     players: [ClockGameResultPlayer, ClockGameResultPlayer];
-    looserId: number;
+    looserId: ClockGameResults;
     turnsCount: number;
     gameTotalTime: number;
     gameEndTime: Date;
-    resultMadeBy: string;
+    resultMadeBy: ClockGameResultReasons;
 
-    constructor(ps: [ClockPlayer, ClockPlayer], clockConf: ClockConfig, looserId: number, resultMadeBy: string) {
+    constructor(ps: [ClockPlayer, ClockPlayer], clockConf: ClockConfig, looserId: ClockGameResults, resultMadeBy: ClockGameResultReasons) {
     let totalPlayTimeInMilliSeconds = 0;
 
     this.players = ps.map((e, id) => {
@@ -214,8 +225,8 @@ class ClockGameResult {
 
     this.looserId = looserId;
     this.resultMadeBy = resultMadeBy;
-    if (looserId === -1) {
-        this.resultMadeBy = "Decision or Stalemate";
+    if (looserId === ClockGameResults.draw) {
+        this.resultMadeBy = ClockGameResultReasons.draw;
     }
     this.turnsCount = clockConf.turnsCount;
     this.gameTotalTime = parseFloat((totalPlayTimeInMilliSeconds / 1000).toFixed(2));
