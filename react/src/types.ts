@@ -197,7 +197,7 @@ export enum ClockGameResults{
 export enum ClockGameResultReasons{
     timeOut = "Time Out",
     draw = "Decision or Stalemate",
-    checkmate = "Checkmate"
+    checkmate = "Checkmate or Resignation"
 }
 
 export class ClockGameResult {
