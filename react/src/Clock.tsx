@@ -179,9 +179,7 @@ const notify = (title : string) => {
     setClockConfig(clockConfig);
     notify("The chess clock has been restarted.");
 
-    const gameData = new GameResult(players);
-    history.current.setActive(gameData);
-    history.current.save();
+    history.current.clearActiveAndSave();
   }
 
   const runClock = async (turn : number) => {

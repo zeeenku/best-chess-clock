@@ -174,6 +174,10 @@ export class GamesHistory {
     getLast(){
         return this.data.history[0];
     }
+    clearActiveAndSave(){
+        this.data.history.shift();
+        this.save();
+    }
 
     hasActiveGame(){
         return this.data.history[0].status === GameStatus.active;
@@ -285,7 +289,7 @@ export class GameResult {
         this.players = ps.map((e, id) => {
             // compatibility prob with turns and how to end games.....
             let playerTurns = clockConf.turnsCount;
-            playerTurns += e.color === "white" && clockConf.turnId === id ? 1 : 0;
+            playerTurns += ps[clockConf.turnId].color === "black" &&  id === 0 ? 1 : 0;
     
             // this methof for total time wotks perfectly tbh no need to use another one
             // even if i do use another on, it will most likely give uncompatible results in case of clock page update
