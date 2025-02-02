@@ -1,4 +1,4 @@
-import { ClockConfig, ClockGameResult, ClockGameResultReasons, ClockGameResults, ClockHistory, ClockInterval, ClockPlayer, ClockPlayerColor, ClockProps, ClockStatus } from "@/types";
+import { ClockConfig, GameResult, GameResultDecisions, GameResults, ClockHistory, ClockInterval, ClockPlayer, ClockPlayerColor, ClockProps, ClockStatus } from "@/types";
 import { FC, useState, useEffect, useRef } from "react";
 import {RotateCcw,Pause,Play, X} from "lucide-react";
 import {Button} from "@/components/ui/button";
@@ -41,7 +41,7 @@ const Clock: FC<ClockProps> = ({ config, onReturnToHome }) => {
   const [clockConfig, setClockConfig] = useState(new ClockConfig());
 
 
-  const [gameResult, setGameResult] = useState<ClockGameResult | null>(null);
+  const [gameResult, setGameResult] = useState<GameResult | null>(null);
 
   const [players, setPlayers] = useState(config.map(
     (el) => new ClockPlayer(el.startTime, el.addiTime )
@@ -138,11 +138,11 @@ const notify = (title : string) => {
     notify("The chess clock is playing now.");
   }
 
-  const looseGame = (looserId : ClockGameResults, resultMadeBy : ClockGameResultReasons) => {
+  const looseGame = (looserId : GameResults, resultMadeBy : GameResultDecisions) => {
 
     stopTurn();
 
-    const result = new ClockGameResult(players, clockConfig, looserId,resultMadeBy );
+    const result = new GameResult(players, clockConfig, looserId,resultMadeBy );
     const history = new ClockHistory();
     history.add(result);
     history.save();
@@ -190,8 +190,8 @@ const notify = (title : string) => {
     const isLost = players[turn].timeInMilliSeconds <= 0;
 
     if(isLost){
-      const t = turn == 0 ? ClockGameResults.player_1_lost : ClockGameResults.player_2_lost;
-      await looseGame(t , ClockGameResultReasons.timeOut);
+      const t = turn == 0 ? GameResults.player_1_lost : GameResults.player_2_lost;
+      await looseGame(t , GameResultDecisions.timeOut);
     }
   };
 
@@ -475,18 +475,18 @@ const clickRestart = () => {
   </DialogHeader>
   <DialogFooter className="justify-center sm:justify-center flex-row flex space-x-4 items-center">
     <DialogClose asChild>
-    <Button onClick={() => looseGame(ClockGameResults.player_2_lost, ClockGameResultReasons.checkmate)} 
+    <Button onClick={() => looseGame(GameResults.player_2_lost, GameResultDecisions.checkmate)} 
     className={`${players[0].color == "white" ? "bg-light-brown text-slate-900"  : "bg-brown text-white" } hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal`}>
       Player 1 {players[0].color} won
     </Button>
     </DialogClose>
     <DialogClose asChild>
-    <Button onClick={() => looseGame(ClockGameResults.draw, ClockGameResultReasons.draw)} className="bg-semi-brown hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal text-slate-900">
+    <Button onClick={() => looseGame(GameResults.draw, GameResultDecisions.draw)} className="bg-semi-brown hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal text-slate-900">
       Draw
     </Button>
     </DialogClose>
     <DialogClose asChild>
-    <Button onClick={() => looseGame(ClockGameResults.player_1_lost, ClockGameResultReasons.checkmate)} 
+    <Button onClick={() => looseGame(GameResults.player_1_lost, GameResultDecisions.checkmate)} 
         className={`${players[1].color == "white" ? "bg-light-brown text-slate-900"  : "bg-brown text-white" } hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal `}>
       Player 2 {players[1].color} won
     </Button>

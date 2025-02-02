@@ -15,7 +15,8 @@ const ClockResultGrid: FC<ClockResultGridProps> = ({ data }) => {
     <>
     <div className="flex items-center justify-center ">
       <div className="w-10/12 p-2 rounded-md bg-semi-brown">
-      <h2 className="text-center text-2xl">Final result</h2>
+      <h2 className="text-center text-2xl">Game result</h2>
+      <h3>Decided by {data.gameResultDecision}</h3>
       <div className="flex mt-5 justify-around">
         <div>
           <h3>Total Turns</h3>
@@ -46,7 +47,7 @@ const ClockResultGrid: FC<ClockResultGridProps> = ({ data }) => {
       p-2 rounded-md w-1/3
       `}>
         <div className="text-lg">Player 1 ({data.players[0].totalTurns}t)</div>
-        <div className={`${ data.looserId !== 0 ? "text-lime-600" : "text-red-500" } text-3xl my-2`}>
+        <div className={`${ data.gameResult !== 0 ? "text-lime-600" : "text-red-500" } text-3xl my-2`}>
           {history.results[0]}
           <span className="text-lg"> +0</span>
           </div>
@@ -67,7 +68,7 @@ const ClockResultGrid: FC<ClockResultGridProps> = ({ data }) => {
       p-2 rounded-md w-1/3
       `}>
         <div className="text-lg">Player 2</div>
-        <div className={`${ data.looserId !== 1 ? "text-lime-500" : "text-red-500" } text-3xl`}>
+        <div className={`${ data.gameResult !== 1 ? "text-lime-500" : "text-red-500" } text-3xl`}>
           {history.results[1]}
           <span className="text-lg"> +0</span>
           </div>

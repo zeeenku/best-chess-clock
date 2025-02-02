@@ -15,7 +15,7 @@ export interface ClockProps {
 
 
 export interface ClockResultGridProps {
-    data : ClockGameResult,
+    data : GameResult,
 };
 
 
@@ -148,32 +148,61 @@ export class ClockConfig{
 }
 
 
-interface ClockGameResultPlayer {
+interface GameResultPlayerData {
     color: ClockPlayerColor;
     format: string;
     totalTimeInSeconds: number;
     totalTurns: number;
 }
 
-interface ClockHistoryData {
+interface GamesHistoryData {
     results : [number,number];
-    history : ClockGameResult[];
+    history : GameResult[];
 }
 
-export class ClockHistory {
-    data: ClockHistoryData; 
+export class GamesHistory {
+    data: GamesHistoryData; 
 
     constructor() {
     const historyData = localStorage.getItem("chess-clock-history");
-    this.data = (historyData ? JSON.parse(historyData) : { results: [0, 0], history: [] } ) as ClockHistoryData;
+    this.data = (historyData ? JSON.parse(historyData) : { results: [0, 0], history: [] } ) as GamesHistoryData;
     }
 
-    add(el: ClockGameResult) {
-    if (el.looserId === -1) {
+    hasActiveGame(){
+        return this.data.history[-1].status === GameStatus.active;
+    }
+
+    getActive(){
+        if(this.data.history[-1].status === GameStatus.active){
+            return this.data.history[-1];
+        }
+    }
+
+    setActive(newData : GameResult){
+        if(this.data.history[-1].status === GameStatus.active){
+            this.data.history[-1] = newData;
+        }
+    }
+
+    updateActiveAndSave(newData : GameResult){
+        this.setActive(newData);
+        this.save();
+    }
+
+    getAllGames(){
+        return this.data.history;
+    }
+
+    getScores(){
+        return this.data.results;
+    }
+
+    add(el: GameResult) {
+    if (el.gameResult === -1) {
         this.data.results[0] += 0.5;
         this.data.results[1] += 0.5;
     } else {
-        this.data.results[el.looserId === 0 ? 1 : 0] += 1;
+        this.data.results[el.gameResult === 0 ? 1 : 0] += 1;
     }
     this.data.history.unshift(el);
     }
@@ -188,53 +217,96 @@ export class ClockHistory {
     }
 }
 
-export enum ClockGameResults{
+
+
+export enum GameResults{
     player_1_lost = 0,
     player_2_lost = 1, 
     draw = -1
 }
 
-export enum ClockGameResultReasons{
+export enum GameResultDecisions{
     timeOut = "Time Out",
     draw = "Decision or Stalemate",
     checkmate = "Checkmate or Resignation"
 }
 
-export class ClockGameResult {
-    players: [ClockGameResultPlayer, ClockGameResultPlayer];
-    looserId: ClockGameResults;
+
+
+
+enum GameStatus{
+    active = "active",
+    finished = "finished"
+}
+
+export class GameResult {
+    players: [GameResultPlayerData, GameResultPlayerData];
+    gameResult: GameResults | null = null;
     turnsCount: number;
     gameTotalTime: number;
-    gameEndTime: Date; // for games history feature....
-    resultMadeBy: ClockGameResultReasons;
+    gameStartTime : Date;
+    gameEndTime: Date | null = null; // for games history feature....
+    gameResultDecision: GameResultDecisions | null = null;
 
-    constructor(ps: [ClockPlayer, ClockPlayer], clockConf: ClockConfig, looserId: ClockGameResults, resultMadeBy: ClockGameResultReasons) {
-    let totalPlayTimeInMilliSeconds = 0;
+    status : GameStatus;
+    constructor(ps: [ClockPlayer, ClockPlayer]){
+        this.gameStartTime = new Date();
+        this.status = GameStatus.active;
+        this.turnsCount = 0;
+        this.gameTotalTime = 0;
+        this.players = ps.map((e) => {
+            const el: GameResultPlayerData = {
+            color: e.color!,
+            format: `${e.startTimeInMinutes}m + ${e.incTimeInSeconds}s`,
+            totalTimeInSeconds: 0,
+            totalTurns: 0,
+            };
+    
+            return el;
+        }) as [GameResultPlayerData, GameResultPlayerData];
+    
 
-    this.players = ps.map((e, id) => {
-        let playerTurns = clockConf.turnsCount;
-        playerTurns += e.color === "white" && clockConf.turnId === id ? 1 : 0;
 
-        const totalPlayerTimeInMilliSeconds = e.startTimeInMinutes * 60 * 1000 - e.timeInMilliSeconds + (playerTurns * e.incTimeInSeconds * 1000);
-        totalPlayTimeInMilliSeconds += totalPlayerTimeInMilliSeconds;
-
-        const el: ClockGameResultPlayer = {
-        color: e.color!,
-        format: `${e.startTimeInMinutes}+${e.incTimeInSeconds}`,
-        totalTimeInSeconds: parseFloat((totalPlayerTimeInMilliSeconds / 1000).toFixed(2)),
-        totalTurns: playerTurns,
-        };
-
-        return el;
-    }) as [ClockGameResultPlayer, ClockGameResultPlayer];
-
-    this.looserId = looserId;
-    this.resultMadeBy = resultMadeBy;
-    if (looserId === ClockGameResults.draw) {
-        this.resultMadeBy = ClockGameResultReasons.draw;
     }
-    this.turnsCount = clockConf.turnsCount;
-    this.gameTotalTime = parseFloat((totalPlayTimeInMilliSeconds / 1000).toFixed(2));
+
+    update(ps: [ClockPlayer, ClockPlayer], clockConf: ClockConfig,){
+        let totalPlayTimeInMilliSeconds = 0;
+
+        this.players = ps.map((e, id) => {
+            // compatibility prob with turns and how to end games.....
+            let playerTurns = clockConf.turnsCount;
+            playerTurns += e.color === "white" && clockConf.turnId === id ? 1 : 0;
+    
+            // this methof for total time wotks perfectly tbh no need to use another one
+            // even if i do use another on, it will most likely give uncompatible results in case of clock page update
+            const totalPlayerTimeInMilliSeconds = e.startTimeInMinutes * 60 * 1000 - e.timeInMilliSeconds + (playerTurns * e.incTimeInSeconds * 1000);
+            totalPlayTimeInMilliSeconds += totalPlayerTimeInMilliSeconds;
+    
+            const el: GameResultPlayerData = {
+            color: e.color!,
+            format: `${e.startTimeInMinutes}m + ${e.incTimeInSeconds}s`,
+            totalTimeInSeconds: parseFloat((totalPlayerTimeInMilliSeconds / 1000).toFixed(2)),
+            totalTurns: playerTurns,
+            };
+    
+            return el;
+        }) as [GameResultPlayerData, GameResultPlayerData];
+    
+
+        this.turnsCount = clockConf.turnsCount;
+        this.gameTotalTime = parseFloat((totalPlayTimeInMilliSeconds / 1000).toFixed(2));
+    }
+
+
+    finish(gameResult: GameResults, gameResultDecision: GameResultDecisions) {
+    this.gameResult = gameResult;
+    this.gameResultDecision = gameResultDecision;
+
+    if (gameResult === GameResults.draw) {
+        this.gameResultDecision = GameResultDecisions.draw;
+    }
+
     this.gameEndTime = new Date();
+    this.status = GameStatus.finished;
     }
 }
