@@ -35,7 +35,7 @@ const Clock: FC<ClockProps> = ({ config, onReturnToHome }) => {
    * cock logic objects declarations section
    */
 
-  const history = new GamesHistory();
+  const history = useRef<GamesHistory>(new GamesHistory());
 
   const { toast } = useToast()
 
@@ -43,7 +43,6 @@ const Clock: FC<ClockProps> = ({ config, onReturnToHome }) => {
   const [clockConfig, setClockConfig] = useState(new ClockConfig());
 
 
-  const [gameResult, setGameResult] = useState<GameResult | null>(null);
 
   const [players, setPlayers] = useState(config.map(
     (el) => new ClockPlayer(el.startTime, el.addiTime )
@@ -125,9 +124,7 @@ const notify = (title : string) => {
     });
 
     notify("The chess clock is paused now.");
-    const game = history.getActive()!;
-    game.update(players, clockConfig);
-    history.updateActiveAndSave(game);
+    history.current.updateActiveAndSave(players, clockConfig);
   }
 
   const playClock = async () => {
@@ -141,20 +138,21 @@ const notify = (title : string) => {
   
     await startTurn();
     notify("The chess clock is playing now.");
-    const game = history.getActive()!;
-    game.update(players, clockConfig);
-    history.updateActiveAndSave(game);
+    history.current.updateActiveAndSave(players, clockConfig);
   }
 
+  const clearHistory = () => {
+    history.current.clear();
+    notify("History has been cleared");
+    onReturnToHome();
+  }
   const endGame = (result : GameResults, resultDecision : GameResultDecisions) => {
     stopTurn();
 
 
-    const gameData = history.getActive()!;
-    gameData.finish(result,resultDecision);
-    history.updateActiveAndSave(gameData);
 
-    setGameResult(gameData);
+    history.current.updateScoreAndFinishActiveAndSave(result,resultDecision);
+
 
     setClockConfig(prevConfig => {
       const newConfig : ClockConfig = new ClockConfig();
@@ -182,7 +180,8 @@ const notify = (title : string) => {
     notify("The chess clock has been restarted.");
 
     const gameData = new GameResult(players);
-    history.updateActiveAndSave(gameData);
+    history.current.setActive(gameData);
+    history.current.save();
   }
 
   const runClock = async (turn : number) => {
@@ -274,8 +273,11 @@ const clickRestart = () => {
       await startTurn();
 
       const gameData = new GameResult(players);
-      history.add(gameData);
-      history.save();
+      console.log(history.current.data.history);
+
+      history.current.add(gameData);
+      history.current.save();
+      console.log(history.current.data.history);
       return;
     }
 
@@ -318,9 +320,11 @@ const clickRestart = () => {
 
     // start turn
     await startTurn();
-    const game = history.getActive()!;
-    game.update(players, clockConfig);
-    history.updateActiveAndSave(game);
+    console.log(history.current.data.history);
+
+    history.current.updateActiveAndSave(players, clockConfig);
+    console.log(history.current.data.history);
+
   };
 
   /**isten for space keyboard clicks */
@@ -359,12 +363,12 @@ const clickRestart = () => {
 
 
   <div>
-    <ClockResultGrid data={gameResult!}/>
+    <ClockResultGrid data={history.current.getLast()}/>
   </div>
 
       <AlertDialogFooter className="flex-row justify-end space-x-2">
 
-      <Button className="bg-light-brown hover:bg-light-brown text-slate-900">Clear Score</Button>
+      <Button onClick={clearHistory} className="bg-light-brown hover:bg-light-brown text-slate-900">Clear History</Button>
 
       <AlertDialogAction className="bg-semi-brown hover:bg-semi-brown text-slate-900" onClick={returnHome}
       

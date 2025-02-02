@@ -160,33 +160,40 @@ interface GamesHistoryData {
     history : GameResult[];
 }
 
+// history is a queue
 export class GamesHistory {
     data: GamesHistoryData; 
 
     constructor() {
     const historyData = localStorage.getItem("chess-clock-history");
     this.data = (historyData ? JSON.parse(historyData) : { results: [0, 0], history: [] } ) as GamesHistoryData;
+    
+}
+
+
+    getLast(){
+        return this.data.history[0];
     }
 
     hasActiveGame(){
-        return this.data.history[-1].status === GameStatus.active;
+        return this.data.history[0].status === GameStatus.active;
     }
 
     getActive() : GameResult | null {
-        if(this.data.history[-1].status === GameStatus.active){
-            return this.data.history[-1];
+        if(this.data.history[0].status === GameStatus.active){
+            return this.data.history[0];
         }
         return null;
     }
 
     setActive(newData : GameResult){
-        if(this.data.history[-1].status === GameStatus.active){
-            this.data.history[-1] = newData;
+        if(this.data.history[0].status === GameStatus.active){
+            this.data.history[0] = newData;
         }
     }
 
-    updateActiveAndSave(newData : GameResult){
-        this.setActive(newData);
+    updateActiveAndSave(ps: [ClockPlayer, ClockPlayer], clockConf: ClockConfig){
+        this.data.history[0].update(ps, clockConf);
         this.save();
     }
 
@@ -199,15 +206,20 @@ export class GamesHistory {
     }
 
     add(el: GameResult) {
-    if (el.gameResult === -1) {
-        this.data.results[0] += 0.5;
-        this.data.results[1] += 0.5;
-    } else {
-        this.data.results[el.gameResult === 0 ? 1 : 0] += 1;
-    }
     this.data.history.unshift(el);
     }
 
+    updateScoreAndFinishActiveAndSave(gameResult: GameResults, gameResultDecision: GameResultDecisions){
+        this.data.history[0].finish(gameResult, gameResultDecision);
+
+        if (gameResult === GameResults.draw ) {
+            this.data.results[0] += 0.5;
+            this.data.results[1] += 0.5;
+        } else {
+            this.data.results[gameResult === 0 ? 1 : 0] += 1;
+        }
+        this.save();
+    }
     save() {
     localStorage.setItem("chess-clock-history", JSON.stringify(this.data));
     }
@@ -265,12 +277,9 @@ export class GameResult {
     
             return el;
         }) as [GameResultPlayerData, GameResultPlayerData];
-    
-
-
     }
 
-    update(ps: [ClockPlayer, ClockPlayer], clockConf: ClockConfig,){
+    update(ps: [ClockPlayer, ClockPlayer], clockConf: ClockConfig){
         let totalPlayTimeInMilliSeconds = 0;
 
         this.players = ps.map((e, id) => {
