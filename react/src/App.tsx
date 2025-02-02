@@ -2,8 +2,10 @@ import { useRef, useState} from 'react'
 import {
   AlertDialog,
   AlertDialogAction,
+  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
+  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
@@ -44,7 +46,7 @@ function App() {
   const history = useRef<GamesHistory>(new GamesHistory());
 
 
-
+const restoreGame = () => {}
 
   const getBtnBgColor = (id : number) => {
     if(id == 0) return "bg-amber-900";
@@ -145,23 +147,16 @@ function App() {
   return (
     <>
 
+
 {
-  history.current.hasActiveGame() ? "active el exists" : "hh" 
-}
-      {
-        showClock ? <Clock config={players} onReturnToHome={()=>{setDialogOpen(true); setShowClock(false);}} /> : <></>
-      }
+        showClock ? <Clock config={players} onReturnToHome={()=>{setDialogOpen(true); setShowClock(false);}} /> :
+        <>
+        <div className="flex w-full flex-col lg:flex-row justify-center items-center p-5">
+                    <div className="w-full lg:w-6/12">
 
-      <AlertDialog  open={isDialogOpen}>
 
-      <AlertDialogContent className="bg-slate-900 max-h-[90vh] overflow-x-hidden overflow-y-auto">
-        <AlertDialogHeader>
-          <AlertDialogTitle className="capitalize text-center">The best chess clock</AlertDialogTitle>
-          <AlertDialogDescription className="text-gray-300 text-center">
-          </AlertDialogDescription>
-        </AlertDialogHeader>
 
-        <div className="flex items-center justify-center space-x-2">
+                    <div className="flex items-center justify-center space-x-2">
               <Switch onCheckedChange={(val)=>{setSamePlayTime(val)}} checked={isSamePlayTime} id="same-play-time-mode" />
               <Label htmlFor="same-play-time-mode" className="text-gray-100">same playtime</Label>
         </div>
@@ -243,16 +238,13 @@ function App() {
               
         )
       }
+                    <div className="flex my-2 gap-x-2">
 
-        </div>
-
-        <div>
-            <AlertDialogAction
+                    <Button
             onClick={()=>startGame()}
-            className="bg-amber-900 w-full hover:bg-amber-950 capitalize my-0">start game</AlertDialogAction>
+            className="bg-amber-900 w-full hover:bg-amber-950 capitalize my-0">start game</Button>
 
 
-        <div className="flex my-2 gap-x-2">
           <div className="w-full">
           <Button onClick={()=>{}} className="w-full bg-lime-900 hover:bg-lime-950">Download as App</Button>
           </div>
@@ -292,19 +284,50 @@ function App() {
                 </DialogHeader>
               </DialogContent>
           </Dialog>
-          </div>
-
-          </div>
-        <div className="text-xs flex gap-1 justify-center">
-        <span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-amber-700">Zenku</a> (Enajjachi Zakariaa).</span>
-
-          <span className="text-gray-300 text-center">You can read the code (<a href="https://github.com/zeeenku/best-chess-clock" className="underline text-amber-700">repo</a>)</span>
+          </div></div>
+</div>
+          
         </div>
-        </div>
-      </AlertDialogContent>
-    </AlertDialog>
+
+
+        <div className="w-full lg:w-6/12">
+          <h1>Best Chess Clock</h1>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          </div>
+</div>
+
+<div className="text-xs flex gap-1 justify-center">
+<span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-amber-700">Zenku</a> (Enajjachi Zakariaa).</span>
+
+  <span className="text-gray-300 text-center">You can read the code (<a href="https://github.com/zeeenku/best-chess-clock" className="underline text-amber-700">repo</a>)</span>
+</div>
+</>
+      }
+
+
+<AlertDialog  open={history.current.hasActiveGame()}>
+
+<AlertDialogContent className="bg-slate-900 max-h-[90vh] overflow-x-hidden overflow-y-auto">
+  <AlertDialogHeader>
+    <AlertDialogTitle className="capitalize text-center">The best chess clock</AlertDialogTitle>
+    <AlertDialogDescription className="text-gray-300 text-center">
+      Continue from last time?
+    </AlertDialogDescription>
+  </AlertDialogHeader>
+
+<AlertDialogFooter>
+<AlertDialogCancel>
+      <Button className="bg-light-brown hover:bg-light-brown text-slate-900">Cancel</Button>
+    </AlertDialogCancel>
+    <AlertDialogAction className="bg-semi-brown hover:bg-semi-brown text-slate-900" onClick={restoreGame}>Yes Please</AlertDialogAction>
+  
+</AlertDialogFooter>
+
+</AlertDialogContent>
+</AlertDialog>
     </>
-  )
+
+);
 }
 
 export default App
