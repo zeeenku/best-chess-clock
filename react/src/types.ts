@@ -205,7 +205,7 @@ export class ClockGameResult {
     looserId: ClockGameResults;
     turnsCount: number;
     gameTotalTime: number;
-    gameEndTime: Date;
+    gameEndTime: Date; // for games history feature....
     resultMadeBy: ClockGameResultReasons;
 
     constructor(ps: [ClockPlayer, ClockPlayer], clockConf: ClockConfig, looserId: ClockGameResults, resultMadeBy: ClockGameResultReasons) {
