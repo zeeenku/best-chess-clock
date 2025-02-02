@@ -355,6 +355,8 @@ const clickRestart = () => {
       <AlertDialogHeader>
         <AlertDialogTitle className="capitalize text-center">The best chess clock</AlertDialogTitle>
         <AlertDialogDescription className="text-gray-300 text-center">
+        <h4 className="text-center text-lg font-semibold">Game result</h4>
+
         </AlertDialogDescription>
       </AlertDialogHeader>
 
@@ -364,15 +366,15 @@ const clickRestart = () => {
     <ClockResultGrid data={history.current.getLast()}/>
   </div>
 
-      <AlertDialogFooter className="flex-row justify-end space-x-2">
+      <AlertDialogFooter className="flex-row justify-center sm:justify-center w-full space-x-2">
 
-      <Button onClick={clearHistory} className="bg-light-brown hover:bg-light-brown text-slate-900">Clear History</Button>
+      <Button onClick={clearHistory} className="bg-brown hover:bg-brown text-white">Clear History</Button>
 
       <AlertDialogAction className="bg-semi-brown hover:bg-semi-brown text-slate-900" onClick={returnHome}
       
-      >Return Home</AlertDialogAction>
+      >Back Home</AlertDialogAction>
 
-    <AlertDialogAction className="bg-semi-brown hover:bg-semi-brown text-slate-900" onClick={clickRestart}>Start New Game</AlertDialogAction>
+    <AlertDialogAction className="bg-light-brown hover:bg-light-brown text-slate-900" onClick={clickRestart}>Rematch</AlertDialogAction>
   </AlertDialogFooter>
       </AlertDialogContent>
       </AlertDialog>
