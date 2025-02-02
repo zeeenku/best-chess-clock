@@ -172,10 +172,11 @@ export class GamesHistory {
         return this.data.history[-1].status === GameStatus.active;
     }
 
-    getActive(){
+    getActive() : GameResult | null {
         if(this.data.history[-1].status === GameStatus.active){
             return this.data.history[-1];
         }
+        return null;
     }
 
     setActive(newData : GameResult){

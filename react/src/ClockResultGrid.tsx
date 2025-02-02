@@ -1,10 +1,10 @@
 import { FC } from "react";
-import { ClockHistory, ClockResultGridProps } from "./types";
+import { GamesHistory, ClockResultGridProps } from "./types";
 
 const ClockResultGrid: FC<ClockResultGridProps> = ({ data }) => {
 
 
-  const history = (new ClockHistory()).data;
+  const history = (new GamesHistory()).data;
   
 /**
  * 

@@ -1,4 +1,4 @@
-import { ClockConfig, GameResult, GameResultDecisions, GameResults, ClockHistory, ClockInterval, ClockPlayer, ClockPlayerColor, ClockProps, ClockStatus } from "@/types";
+import { ClockConfig, GameResult, GameResultDecisions, GameResults, GamesHistory, ClockInterval, ClockPlayer, ClockPlayerColor, ClockProps, ClockStatus } from "@/types";
 import { FC, useState, useEffect, useRef } from "react";
 import {RotateCcw,Pause,Play, X} from "lucide-react";
 import {Button} from "@/components/ui/button";
@@ -34,6 +34,8 @@ const Clock: FC<ClockProps> = ({ config, onReturnToHome }) => {
   /**
    * cock logic objects declarations section
    */
+
+  const history = new GamesHistory();
 
   const { toast } = useToast()
 
@@ -123,6 +125,9 @@ const notify = (title : string) => {
     });
 
     notify("The chess clock is paused now.");
+    const game = history.getActive()!;
+    game.update(players, clockConfig);
+    history.updateActiveAndSave(game);
   }
 
   const playClock = async () => {
@@ -136,18 +141,20 @@ const notify = (title : string) => {
   
     await startTurn();
     notify("The chess clock is playing now.");
+    const game = history.getActive()!;
+    game.update(players, clockConfig);
+    history.updateActiveAndSave(game);
   }
 
-  const looseGame = (looserId : GameResults, resultMadeBy : GameResultDecisions) => {
-
+  const endGame = (result : GameResults, resultDecision : GameResultDecisions) => {
     stopTurn();
 
-    const result = new GameResult(players, clockConfig, looserId,resultMadeBy );
-    const history = new ClockHistory();
-    history.add(result);
-    history.save();
 
-    setGameResult(result);
+    const gameData = history.getActive()!;
+    gameData.finish(result,resultDecision);
+    history.updateActiveAndSave(gameData);
+
+    setGameResult(gameData);
 
     setClockConfig(prevConfig => {
       const newConfig : ClockConfig = new ClockConfig();
@@ -174,6 +181,8 @@ const notify = (title : string) => {
     setClockConfig(clockConfig);
     notify("The chess clock has been restarted.");
 
+    const gameData = new GameResult(players);
+    history.updateActiveAndSave(gameData);
   }
 
   const runClock = async (turn : number) => {
@@ -191,7 +200,7 @@ const notify = (title : string) => {
 
     if(isLost){
       const t = turn == 0 ? GameResults.player_1_lost : GameResults.player_2_lost;
-      await looseGame(t , GameResultDecisions.timeOut);
+      await endGame(t , GameResultDecisions.timeOut);
     }
   };
 
@@ -263,6 +272,10 @@ const clickRestart = () => {
 
       // start turn
       await startTurn();
+
+      const gameData = new GameResult(players);
+      history.add(gameData);
+      history.save();
       return;
     }
 
@@ -305,6 +318,9 @@ const clickRestart = () => {
 
     // start turn
     await startTurn();
+    const game = history.getActive()!;
+    game.update(players, clockConfig);
+    history.updateActiveAndSave(game);
   };
 
   /**isten for space keyboard clicks */
@@ -475,18 +491,18 @@ const clickRestart = () => {
   </DialogHeader>
   <DialogFooter className="justify-center sm:justify-center flex-row flex space-x-4 items-center">
     <DialogClose asChild>
-    <Button onClick={() => looseGame(GameResults.player_2_lost, GameResultDecisions.checkmate)} 
+    <Button onClick={() => endGame(GameResults.player_2_lost, GameResultDecisions.checkmate)} 
     className={`${players[0].color == "white" ? "bg-light-brown text-slate-900"  : "bg-brown text-white" } hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal`}>
       Player 1 {players[0].color} won
     </Button>
     </DialogClose>
     <DialogClose asChild>
-    <Button onClick={() => looseGame(GameResults.draw, GameResultDecisions.draw)} className="bg-semi-brown hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal text-slate-900">
+    <Button onClick={() => endGame(GameResults.draw, GameResultDecisions.draw)} className="bg-semi-brown hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal text-slate-900">
       Draw
     </Button>
     </DialogClose>
     <DialogClose asChild>
-    <Button onClick={() => looseGame(GameResults.player_1_lost, GameResultDecisions.checkmate)} 
+    <Button onClick={() => endGame(GameResults.player_1_lost, GameResultDecisions.checkmate)} 
         className={`${players[1].color == "white" ? "bg-light-brown text-slate-900"  : "bg-brown text-white" } hover:bg-semi-brown h-full capitalize w-3/12 whitespace-normal `}>
       Player 2 {players[1].color} won
     </Button>
