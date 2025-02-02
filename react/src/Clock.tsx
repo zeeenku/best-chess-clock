@@ -355,7 +355,7 @@ const clickRestart = () => {
       <AlertDialogHeader>
         <AlertDialogTitle className="capitalize text-center">The best chess clock</AlertDialogTitle>
         <AlertDialogDescription className="text-gray-300 text-center">
-        <h4 className="text-center text-lg font-semibold">Game result</h4>
+        <h4 className="text-center text-lg font-semibold">Game Result</h4>
 
         </AlertDialogDescription>
       </AlertDialogHeader>

@@ -1,4 +1,4 @@
-import { useState} from 'react'
+import { useRef, useState} from 'react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,7 +31,7 @@ import { Input } from "@/components/ui/input"
 
 import './App.css'
 import Clock from './Clock'
-import { Player } from './types'
+import { GamesHistory, Player } from './types'
 
 
 
@@ -41,6 +41,7 @@ function App() {
   const [isSamePlayTime, setSamePlayTime] = useState(true);
   const startTime = 10; const addiTime = 5;
   const [showClock,setShowClock] = useState(false);
+  const history = useRef<GamesHistory>(new GamesHistory());
 
 
 
@@ -144,6 +145,9 @@ function App() {
   return (
     <>
 
+{
+  history.current.hasActiveGame() ? "active el exists" : "hh" 
+}
       {
         showClock ? <Clock config={players} onReturnToHome={()=>{setDialogOpen(true); setShowClock(false);}} /> : <></>
       }
