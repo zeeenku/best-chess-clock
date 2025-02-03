@@ -151,9 +151,12 @@ const restoreGame = () => {}
 {
         showClock ? <Clock config={players} onReturnToHome={()=>{setDialogOpen(true); setShowClock(false);}} /> :
         <>
-        <div className="flex w-full flex-col lg:flex-row justify-center items-center p-5">
-                    <div className="w-full lg:w-6/12">
+        <div className="flex h-[100dvh] w-full flex-col lg:flex-row lg:space-x-20 lg:px-20 overflow-x-auto justify-center items-start  p-10">
+                    <div className="w-full flex justify-between items-center  h-screen
+                    flex-col lg:w-6/12 bg-slate-950 lg:top-0 lg:sticky lg:max-h-full lg:overflow-x-auto 
+                    p-5 lg:h-full rounded-lg">
 
+  <div className="l">Best Chess Clock</div>
 
 
                     <div className="flex items-center justify-center space-x-2">
@@ -186,7 +189,7 @@ const restoreGame = () => {}
                   <Button 
                   key={index}
                   size="sm"
-                  className={`${el.time == player.startTime ? getBtnFocusBgColor(id) : getBtnBgColor(id) }  ${getBtnHoverBgColor(id)} text-xs w-12 h-8`} 
+                  className={`${el.time == player.startTime ? getBtnFocusBgColor(id) : getBtnBgColor(id) }  ${getBtnHoverBgColor(id)} text-xs w-1/4 aspect-square`} 
                   onClick={()=>setPlayTime(id, el.time)}>{el.name}</Button>
                 )
               }
@@ -215,7 +218,7 @@ const restoreGame = () => {}
                 addiTimeRecom.map((el,index)=>
                   <Button 
                 key={index}
-                  className={`${el.time == player.addiTime ? getBtnFocusBgColor(id) : getBtnBgColor(id) }  ${getBtnHoverBgColor(id)} text-xs w-12 h-8`} 
+                  className={`${el.time == player.addiTime ? getBtnFocusBgColor(id) : getBtnBgColor(id) }  ${getBtnHoverBgColor(id)} text-xs w-1/4 aspect-square`} 
                   onClick={()=>setAddiTime(id, el.time)}>{el.name}</Button>
                 )
               }
@@ -287,20 +290,38 @@ const restoreGame = () => {}
           </div></div>
 </div>
           
-        </div>
-
-
-        <div className="w-full lg:w-6/12">
-          <h1>Best Chess Clock</h1>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
-          </div>
-</div>
-
 <div className="text-xs flex gap-1 justify-center">
 <span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-amber-700">Zenku</a> (Enajjachi Zakariaa).</span>
 
   <span className="text-gray-300 text-center">You can read the code (<a href="https://github.com/zeeenku/best-chess-clock" className="underline text-amber-700">repo</a>)</span>
 </div>
+        </div>
+
+
+        <div className="w-full lg:w-6/12">
+          <h1 className="text-4xl font-bold text-center">Play Chess with the #1 Chess Timer App!</h1>
+          <h2 className="text-2xl text-semi-brown mt-8 font-bold text-center"> <span>123,765,199</span> 
+          <span className="text-2xl italic text-center"> Games Played</span>
+          </h2>
+          <p className="mt-10">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+
+          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          </div>
+</div>
+
 </>
       }
 
