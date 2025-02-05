@@ -134,18 +134,18 @@ const restoreGame = () => {}
 {
         showClock ? <Clock config={players} onReturnToHome={()=>{setDialogOpen(true); setShowClock(false);}} /> :
         <>
-        <div className="flex h-[100dvh] w-full flex-col lg:flex-row lg:space-x-20 lg:px-20 
-        overflow-x-auto justify-center items-start  p-10">
-                    <div className="w-full lg:sticky flex flex-col justify-center items-center h-full lg:top-0
-                    lg:w-6/12 ">
+        <div className="flex lg:h-[100dvh] lg:max-h-[100dvh] w-full flex-col lg:flex-row lg:space-x-20 lg:px-20 
+        overflow-x-auto justify-center items-start  lg:py-10">
 
-<div className=" bg-slate-950 w-full
-                    py-3 px-8 rounded-lg   h-fit
+
+<div className="bg-slate-950 w-full lg:sticky flex flex-col justify-center items-center h-fit max-h-full lg:top-0
+                    lg:w-6/12 
+                    pt-5 lg:py-3 pb-8 px-3 lg:px-8 rounded-lg
 lg:max-h-full lg:overflow-y-auto ">
 
 
   <Tabs defaultValue="home" className="w-full">
-      <TabsList className='w-full text-slate-100 bg-slate-950 justify-between'>
+      <TabsList className='w-full text-slate-100 bg-transparent justify-between'>
         
       <div className="flex justify-center text-sm items-center">      
               <img src="./logo.svg" className="w-9 me-2" width="2rem" height="2rem" />
@@ -164,26 +164,33 @@ lg:max-h-full lg:overflow-y-auto ">
 
   <Carousel className="w-full">
 
-        
-  <div className="flex items-center justify-center space-x-2">
+  <h1 className="block lg:hidden text-md sm:text-2xl font-bold mx-auto mt-8 mb-4 w-11/12 text-center">Play Chess with the #1 Chess Timer App!</h1>
+<h2 className="block lg:hidden text-sm  sm:text-xl text-semi-brown mx-auto mb-6 w-11/12 font-bold text-center"> <span>123,765,199</span> 
+<span className="text-xs  sm:text-lg italic text-center"> games played</span>
+</h2>
+
+  <div className="flex items-center justify-center my-3 lg:my-0 space-x-2">
 
               <Switch onCheckedChange={(val)=>{setSamePlayTime(val)}} checked={isSamePlayTime} id="same-play-time-mode" />
               <Label htmlFor="same-play-time-mode" className="text-gray-100">same playtime</Label>
         </div>
 
+
+
+
       <CarouselContent >
         {(isSamePlayTime ? [players[0]] : players).map((player, id) => (
           <CarouselItem className='' key={id}>
-            <div className={`${isSamePlayTime ? "p-1" : "px-7" }`}>
+            <div className={`px-2`}>
 
           {
           !isSamePlayTime ? (
             <div className='flex justify-center mt-4 space-x-4 items-center'> 
 
-              <CarouselPrevious className="relative text-slate-900 w-4 p-3 m-0 left-0 translate-x-0 translate-y-0 top-0 h-6" />
+              <CarouselPrevious className="relative text-slate-900 w-4 h-4 m-0 left-0 translate-x-0 translate-y-0 top-0" />
               <h2 className="font-semibold text-sm text-center">Player {id+1}</h2>
 
-              <CarouselNext className="relative text-slate-900 w-4 p-3 m-0 left-0 translate-x-0 translate-y-0 top-0 h-6" />
+              <CarouselNext className="relative text-slate-900 w-4 h-4 m-0 left-0 translate-x-0 translate-y-0 top-0" />
             </div>
           ) : 
             <></>
@@ -208,10 +215,8 @@ lg:max-h-full lg:overflow-y-auto ">
     </Carousel>
     
 
-    <div >
 
-
-    <div className="flex flex-nowrap my-2 gap-x-2">
+    <div className="flex w-10/12 mx-auto my-8 lg:my-1 gap-x-2">
 
     <div className="w-full">
     <Button onClick={()=>{}} className="w-full text-xs bg-slate-800 hover:bg-slate-800 text-white">Download App</Button>
@@ -229,10 +234,17 @@ lg:max-h-full lg:overflow-y-auto ">
     </div>
 
     </div>
+    <div >
+
+
     </div>
 
     </TabsContent>
-  <TabsContent value="history">Change your password here.</TabsContent>
+  <TabsContent value="history" className="flex flex-col justify-around items-center">
+    <div className='h-full max-h-full overflow-auto'>
+    Change your password here.
+    </div>
+    </TabsContent>
 </Tabs>
 
 
@@ -243,7 +255,6 @@ lg:max-h-full lg:overflow-y-auto ">
 
   <span className="text-gray-300 text-center">&copy; 2025, Open Source Project (<a href="https://github.com/zeeenku/best-chess-clock" className="underline text-semi-brown">code</a>)</span>
 </div>
-        </div>
         </div>
 
         <div className="w-full lg:w-6/12">
