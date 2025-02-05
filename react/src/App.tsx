@@ -141,31 +141,54 @@ const restoreGame = () => {}
                     p-5 lg:h-full rounded-lg">
 
 
-        <div className="flex justify-center items-center">      
-          <img src="./logo.svg" className="w-12 me-4" width="2rem" height="2rem" />
-        Best Chess Clock</div>
+
+  <Tabs defaultValue="home" className="w-full ">
+      <TabsList className='w-full text-slate-100 bg-slate-950 mb-5 justify-between'>
+        
+      <div className="flex justify-center items-center">      
+              <img src="./logo.svg" className="w-12 me-4" width="2rem" height="2rem" />
+            Best Chess Clock</div>
+
+        <div className='flex '>
+          <TabsTrigger value="home">Home</TabsTrigger>
+          <TabsTrigger value="history">History</TabsTrigger>
+        </div>
+      </TabsList>
+  
+  
+  <TabsContent value="home" className='px-8'>
+    
 
 
-        <Tabs defaultValue="home">
-  <TabsList>
-    <TabsTrigger value="home">Home</TabsTrigger>
-    <TabsTrigger value="history">History</TabsTrigger>
-  </TabsList>
-  <TabsContent value="home">
-    
-    
-  <Carousel className="w-full max-w-xs">
-      <CarouselContent>
+  <Carousel className="w-full">
+
+        
+  <div className="flex items-center justify-center space-x-2">
+
+              <Switch onCheckedChange={(val)=>{setSamePlayTime(val)}} checked={isSamePlayTime} id="same-play-time-mode" />
+              <Label htmlFor="same-play-time-mode" className="text-gray-100">same playtime</Label>
+        </div>
+
+      <CarouselContent >
         {(isSamePlayTime ? [players[0]] : players).map((player, id) => (
-          <CarouselItem key={id}>
+          <CarouselItem className='' key={id}>
             <div className="p-1">
-            {
-              !isSamePlayTime ? (
-                <>
-                  <h2 className="font-semibold text-slate-900 text-md mt-6 text-center">Player {id+1}</h2>
-                </>
-              ) : (<></>)
-            }
+
+          {
+          !isSamePlayTime ? (
+            <div className='flex justify-center mt-4 items-center space-x-4'> 
+
+              <CarouselPrevious className="relative text-slate-900 w-6 text-xs m-0 left-0 translate-x-0 translate-y-0 top-0 h-6" />
+              <h2 className="font-semibold text-md text-center">Player {id+1}</h2>
+
+              <CarouselNext className="relative text-slate-900 w-6 text-xs m-0 left-0 translate-x-0 translate-y-0 top-0 h-6" />
+            </div>
+          ) : 
+            <></>
+    
+
+                
+}
             
 
               <PlayerCustomConfig id={id} initData={player} onUpdateConfig={(id: number, p:Player)=>{
@@ -178,41 +201,40 @@ const restoreGame = () => {}
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+
+
     </Carousel>
     
+
+    <div >
+
+
+    <div className="flex flex-nowrap my-2 gap-x-2">
+
+    <div className="w-full">
+    <Button onClick={()=>{}} className="w-full text-xs bg-slate-800 hover:bg-slate-800 text-white">Download App</Button>
+    </div>
+
+    <Button onClick={()=>startGame()}
+    className="bg-semi-brown hover:bg-semi-brown w-full text-xs text-slate-900 capitalize my-0">Start Game
+    </Button>
+
+
+
+
+    <div className="w-full text-xs">
+    <ShareDialog url={url} />
+    </div>
+
+    </div>
+    </div>
+
     </TabsContent>
   <TabsContent value="history">Change your password here.</TabsContent>
 </Tabs>
 
-            <div className="flex items-center justify-center space-x-2">
-              <Switch onCheckedChange={(val)=>{setSamePlayTime(val)}} checked={isSamePlayTime} id="same-play-time-mode" />
-              <Label htmlFor="same-play-time-mode" className="text-gray-100">same playtime</Label>
-        </div>
 
-        <div >
-
-
-                    <div className="flex my-2 gap-x-2">
-
-          <div className="w-full">
-            <Button onClick={()=>{}} className="w-full bg-slate-800 hover:bg-slate-800 text-white">Download as App</Button>
-          </div>
-
-            <Button onClick={()=>startGame()}
-              className="bg-semi-brown hover:bg-semi-brown w-full text-slate-900 capitalize my-0">start game
-            </Button>
-
-
-
-
-          <div className="w-full">
-            <ShareDialog url={url} />
-          </div>
-          
-        </div>
-</div>
+  
           
 <div className="text-xs flex gap-1 justify-center">
 <span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-semi-brown">Zenku</a> (Enajjachi Zakariaa).</span>
@@ -233,7 +255,7 @@ const restoreGame = () => {}
 
 <AlertDialog  open={history.current.hasActiveGame()}>
 
-<AlertDialogContent className="bg-slate-900 max-h-[90vh] overflow-x-hidden overflow-y-auto">
+<AlertDialogContent className="bg-slate-900 max-h-[95vh] overflow-x-hidden overflow-y-auto">
   <AlertDialogHeader>
     <AlertDialogTitle className="capitalize text-center">
 The best chess clock</AlertDialogTitle>

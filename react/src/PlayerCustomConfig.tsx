@@ -82,7 +82,7 @@ const PlayTimeConfig : FC<Props> = ({initData, id, onUpdateConfig}) => {
 
     return (
         <div className="flex justify-center gap-x-6 mb-4">
-        <div className="w-5/12">
+        <div className="w-6/12">
         <Label htmlFor="start-time" className="text-center mx-auto my-4 block text-gray-100 w-28">start time(m)</Label>
         <div className="flex max-w-full my-2 w-full flex-wrap justify-center items-center">
         {
@@ -116,7 +116,7 @@ const PlayTimeConfig : FC<Props> = ({initData, id, onUpdateConfig}) => {
 
         </div>
 
-<div className="w-5/12">
+<div className="w-6/12">
 <Label htmlFor="start-time" className="text-center mx-auto my-4 block text-gray-100 w-28">Addi. time(s)</Label>
 
 <div className="flex max-w-full w-full flex-wrap justify-center items-center">

@@ -13,7 +13,7 @@ const ShareDialog: FC<Props>= ({url }) => {
     return (
     <Dialog>
             <DialogTrigger asChild className="w-full">          
-                <Button className="w-full bg-light-brown hover:bg-light-brown text-slate-900">Share With Friends</Button>
+                <Button className="w-full bg-light-brown hover:bg-light-brown text-slate-900">Share</Button>
             </DialogTrigger>
             <DialogContent className="bg-slate-900">
                 <DialogHeader>
