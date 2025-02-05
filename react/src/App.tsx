@@ -48,19 +48,22 @@ function App() {
 
 const restoreGame = () => {}
 
-  const getBtnBgColor = (id : number) => {
-    if(id == 0) return "bg-amber-900";
-    return "bg-lime-900"
+
+
+
+  const getBtnColors = (id : number) => {
+    if(id == 0) return "bg-slate-800 text-slate-100";
+    return "bg-slate-100 text-slate-900"
   }
 
-  const getBtnFocusBgColor = (id : number) => {
-    if(id == 0) return "bg-amber-950";
-    return "bg-lime-950"
+  const getBtnFocusColors = (id : number) => {
+    if(id == 0) return "bg-semi-brown text-slate-900";
+    return "bg-slate-200 text-slate-900"
   }
 
-  const getBtnHoverBgColor = (id : number) => {
-    if(id == 0) return "hover:bg-amber-950";
-    return "hover:bg-lime-950"
+  const getBtnHoverColors = (id : number) => {
+    if(id == 0) return "hover:bg-semi-brown text-slate-900";
+    return "hover:bg-slate-200 text-slate-900"
   }
 
 
@@ -156,7 +159,9 @@ const restoreGame = () => {}
                     flex-col lg:w-6/12 bg-slate-950 lg:top-0 lg:sticky lg:max-h-full lg:overflow-x-auto 
                     p-5 lg:h-full rounded-lg">
 
-  <div className="l">Best Chess Clock</div>
+  <div className="flex justify-center items-center">      
+    <img src="./logo.svg" className="w-12 me-4" width="2rem" height="2rem" />
+  Best Chess Clock</div>
 
 
                     <div className="flex items-center justify-center space-x-2">
@@ -173,7 +178,7 @@ const restoreGame = () => {}
             {
               !isSamePlayTime ? (
                 <>
-                  <h2 className="font-semibold text-md mt-6 text-center">Player {id}</h2>
+                  <h2 className="font-semibold text-slate-900 text-md mt-6 text-center">Player {id}</h2>
                 </>
               ) : (<></>)
             }
@@ -189,7 +194,9 @@ const restoreGame = () => {}
                   <Button 
                   key={index}
                   size="sm"
-                  className={`${el.time == player.startTime ? getBtnFocusBgColor(id) : getBtnBgColor(id) }  ${getBtnHoverBgColor(id)} text-xs w-1/4 aspect-square`} 
+                  className={`${el.time == player.startTime ? getBtnFocusColors(id) : getBtnColors(id) }   
+                  ${getBtnHoverColors(id)} text-semibold 
+                  text-sm w-1/4 h-auto aspect-square`} 
                   onClick={()=>setPlayTime(id, el.time)}>{el.name}</Button>
                 )
               }
@@ -200,8 +207,8 @@ const restoreGame = () => {}
                 <div className="flex justify-center gap-x-1 items-center bg-slate-100 rounded-md p-1">
                   <Input onChange={(e)=>setPlayTime(id, parseInt(e.target.value) )} type="start-time" value={player.startTime} 
                   className=" border-none shadow-none h-6 focus:shadow-none text-slate-900" placeholder="Minutes" />
-                  <Button size="sm" className={`${getBtnBgColor(id)} ${getBtnHoverBgColor(id)} h-6`} onClick={()=>setPlayTime(id, player.startTime+1)}>+</Button>
-                  <Button size="sm" className={`${getBtnBgColor(id)} ${getBtnHoverBgColor(id)} h-6`} onClick={()=>setPlayTime(id, player.startTime-1)}>-</Button>
+                  <Button size="sm" className={`${getBtnColors(id)} ${getBtnHoverColors(id)} h-6`} onClick={()=>setPlayTime(id, player.startTime+1)}>+</Button>
+                  <Button size="sm" className={`${getBtnColors(id)} ${getBtnHoverColors(id)} h-6`} onClick={()=>setPlayTime(id, player.startTime-1)}>-</Button>
                 </div>
 
 
@@ -218,7 +225,9 @@ const restoreGame = () => {}
                 addiTimeRecom.map((el,index)=>
                   <Button 
                 key={index}
-                  className={`${el.time == player.addiTime ? getBtnFocusBgColor(id) : getBtnBgColor(id) }  ${getBtnHoverBgColor(id)} text-xs w-1/4 aspect-square`} 
+                  className={`${el.time == player.addiTime ? getBtnFocusColors(id) : getBtnColors(id) }  ${getBtnHoverColors(id)}  
+                  text-semibold
+                  text-sm w-1/4 h-auto aspect-square`} 
                   onClick={()=>setAddiTime(id, el.time)}>{el.name}</Button>
                 )
               }
@@ -229,8 +238,8 @@ const restoreGame = () => {}
               <div className="flex w- my-2 justify-center gap-x-1 items-center bg-slate-100 rounded-md p-1">
                   <Input onChange={(e)=>setAddiTime(id, parseInt(e.target.value) )} type="start-time" value={player.addiTime} 
                   className=" border-none shadow-none h-6 focus:shadow-none text-slate-900" placeholder="Seconds" />
-                  <Button size="sm" className={`${getBtnBgColor(id)} ${getBtnHoverBgColor(id)} h-6`} onClick={()=>setAddiTime(id, player.addiTime+1)}>+</Button>
-                  <Button size="sm" className={`${getBtnBgColor(id)} ${getBtnHoverBgColor(id)} h-6`} onClick={()=>setAddiTime(id, player.addiTime-1)}>-</Button>
+                  <Button size="sm" className={`${getBtnColors(id)} ${getBtnHoverColors(id)} h-6`} onClick={()=>setAddiTime(id, player.addiTime+1)}>+</Button>
+                  <Button size="sm" className={`${getBtnColors(id)} ${getBtnHoverColors(id)} h-6`} onClick={()=>setAddiTime(id, player.addiTime-1)}>-</Button>
                 </div>
                 </div>
               </div>
@@ -303,23 +312,36 @@ const restoreGame = () => {}
           <h2 className="text-2xl text-semi-brown mt-8 font-bold text-center"> <span>123,765,199</span> 
           <span className="text-2xl italic text-center"> Games Played</span>
           </h2>
-          <p className="mt-10">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
-
-          <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          <div className="my-10">
+            <h3 className="text-xl font-semibold text-semi-brown mb-4">Loluptates qui tenetur, doloremque cum delectus mollitia?</h3>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
           </div>
+
+          <div className="my-10">
+            <h3 className="text-xl font-semibold text-semi-brown mb-4">Loluptates qui tenetur, doloremque cum delectus mollitia?</h3>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          </div>
+
+
+          <div className="my-10">
+            <h3 className="text-xl font-semibold text-semi-brown mb-4">Loluptates qui tenetur, doloremque cum delectus mollitia?</h3>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          </div>
+
+
+
+          <div className="my-10">
+            <h3 className="text-xl font-semibold text-semi-brown mb-4">Loluptates qui tenetur, doloremque cum delectus mollitia?</h3>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          </div>
+
+
+          <div className="my-10">
+            <h3 className="text-xl font-semibold text-semi-brown mb-4">Loluptates qui tenetur, doloremque cum delectus mollitia?</h3>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, assumenda? Delectus, veniam tempora perferendis repellat dolorem aliquam officiis error deserunt sit earum iure. Rerum nulla magni minus facere, repudiandae dolorum.</p>
+          </div>
+        
+        </div>
 </div>
 
 </>
@@ -330,7 +352,8 @@ const restoreGame = () => {}
 
 <AlertDialogContent className="bg-slate-900 max-h-[90vh] overflow-x-hidden overflow-y-auto">
   <AlertDialogHeader>
-    <AlertDialogTitle className="capitalize text-center">The best chess clock</AlertDialogTitle>
+    <AlertDialogTitle className="capitalize text-center">
+The best chess clock</AlertDialogTitle>
     <AlertDialogDescription className="text-gray-300 text-center">
       Continue from last time?
     </AlertDialogDescription>

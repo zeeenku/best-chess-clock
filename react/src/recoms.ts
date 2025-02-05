@@ -1,6 +1,16 @@
 import {TimeRecom} from "@/types";
 export const startTimeRecom : TimeRecom[] = [
     {
+        name : "1m",
+        time : 1,
+    },
+
+
+    {
+        name : "3m",
+        time : 3,
+    },
+    {
     name : "5m",
     time : 5,
     },
@@ -66,10 +76,21 @@ export const addiTimeRecom : TimeRecom[] = [
     time : 10,
     },
 
+    {
+        name : "20s",
+        time : 20,
+    },
+
 
     {
     name : "30s",
     time : 30,
+    },
+
+
+    {
+        name : "40s",
+        time : 40,
     },
 
     {
