@@ -187,30 +187,33 @@ const restoreGame = () => {}
             
 
             
-            <div className="flex gap-x-2 mb-4">
-            <div className="w-1/2">
+            <div className="flex justify-center gap-x-6 mb-4">
+            <div className="w-5/12">
             <Label htmlFor="start-time" className="text-center mx-auto my-4 block text-gray-100 w-28">start time(m)</Label>
-            <div className="flex max-w-full my-2 w-full flex-wrap justify-center items-center gap-1">
+            <div className="flex max-w-full my-2 w-full flex-wrap justify-center items-center">
               {
                 startTimeRecom.map( (el,index)=>
+                  <div className="p-0.5 w-1/3">
                   <Button 
+  
                   key={index}
                   size="sm"
                   className={`${el.time == player.startTime ? getBtnFocusColors(id) : getBtnColors(id) }   
                   ${getBtnHoverColors(id)} text-semibold 
-                  text-sm w-1/4 h-auto aspect-square`} 
+                  text-sm w-full h-auto aspect-square`} 
                   onClick={()=>setPlayTime(id, el.time)}>{el.name}</Button>
+                  </div>
                 )
               }
       
               </div>
-              <div className="flex w-10/12 mx-auto flex-nowrap items-center space-x-2">
+              <div className="flex  mx-auto flex-nowrap items-center space-x-2">
                 
                 <div className="flex justify-center gap-x-1 items-center bg-slate-100 rounded-md p-1">
                   <Input onChange={(e)=>setPlayTime(id, parseInt(e.target.value) )} type="start-time" value={player.startTime} 
-                  className=" border-none shadow-none h-6 focus:shadow-none text-slate-900" placeholder="Minutes" />
-                  <Button size="sm" className={`${getBtnColors(id)} ${getBtnHoverColors(id)} h-6`} onClick={()=>setPlayTime(id, player.startTime+1)}>+</Button>
-                  <Button size="sm" className={`${getBtnColors(id)} ${getBtnHoverColors(id)} h-6`} onClick={()=>setPlayTime(id, player.startTime-1)}>-</Button>
+                  className="bg-light-brown border-none shadow-none h-6 focus:shadow-none text-slate-900" placeholder="Minutes" />
+                  <Button size="sm" className={`bg-semi-brown text-slate-900 h-6`} onClick={()=>setPlayTime(id, player.startTime+1)}>+</Button>
+                  <Button size="sm" className={`bg-semi-brown text-slate-900 h-6`} onClick={()=>setPlayTime(id, player.startTime-1)}>-</Button>
                 </div>
 
 
@@ -219,29 +222,31 @@ const restoreGame = () => {}
       
               </div>
 
-<div className="w-1/2">
+<div className="w-5/12">
 <Label htmlFor="start-time" className="text-center mx-auto my-4 block text-gray-100 w-28">Addi. time(s)</Label>
 
-<div className="flex max-w-full w-full flex-wrap justify-center items-center gap-1">
+<div className="flex max-w-full w-full flex-wrap justify-center items-center">
 {
                 addiTimeRecom.map((el,index)=>
+                  <div className="p-0.5 w-1/3">
                   <Button 
                 key={index}
                   className={`${el.time == player.addiTime ? getBtnFocusColors(id) : getBtnColors(id) }  ${getBtnHoverColors(id)}  
                   text-semibold
-                  text-sm w-1/4 h-auto aspect-square`} 
+                  text-sm w-full h-auto aspect-square`} 
                   onClick={()=>setAddiTime(id, el.time)}>{el.name}</Button>
+                  </div>
                 )
               }
 
               </div>
-              <div className="flex w-10/12 mx-auto flex-nowrap items-center space-x-2">
+              <div className="flex mx-auto flex-nowrap items-center space-x-2">
 
-              <div className="flex w- my-2 justify-center gap-x-1 items-center bg-slate-100 rounded-md p-1">
+              <div className="flex my-2 justify-center gap-x-1 items-center bg-slate-100 rounded-md p-1">
                   <Input onChange={(e)=>setAddiTime(id, parseInt(e.target.value) )} type="start-time" value={player.addiTime} 
                   className=" border-none shadow-none h-6 focus:shadow-none text-slate-900" placeholder="Seconds" />
-                  <Button size="sm" className={`${getBtnColors(id)} ${getBtnHoverColors(id)} h-6`} onClick={()=>setAddiTime(id, player.addiTime+1)}>+</Button>
-                  <Button size="sm" className={`${getBtnColors(id)} ${getBtnHoverColors(id)} h-6`} onClick={()=>setAddiTime(id, player.addiTime-1)}>-</Button>
+                  <Button size="sm" className={`bg-semi-brown text-slate-900 h-6`} onClick={()=>setAddiTime(id, player.addiTime+1)}>+</Button>
+                  <Button size="sm" className={`bg-semi-brown text-slate-900 h-6`} onClick={()=>setAddiTime(id, player.addiTime-1)}>-</Button>
                 </div>
                 </div>
               </div>
@@ -254,14 +259,16 @@ const restoreGame = () => {}
       }
                     <div className="flex my-2 gap-x-2">
 
+          <div className="w-full">
+            <Button onClick={()=>{}} className="w-full bg-slate-800 hover:bg-slate-800 text-white">Download as App</Button>
+          </div>
+
             <Button onClick={()=>startGame()}
-            className="bg-amber-900 w-full hover:bg-amber-950 capitalize my-0">start game
+              className="bg-semi-brown hover:bg-semi-brown w-full text-slate-900 capitalize my-0">start game
             </Button>
 
 
-          <div className="w-full">
-            <Button onClick={()=>{}} className="w-full bg-lime-900 hover:bg-lime-950">Download as App</Button>
-          </div>
+
 
           <div className="w-full">
             <ShareDialog url={url} />
@@ -271,9 +278,9 @@ const restoreGame = () => {}
 </div>
           
 <div className="text-xs flex gap-1 justify-center">
-<span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-amber-700">Zenku</a> (Enajjachi Zakariaa).</span>
+<span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-semi-brown">Zenku</a> (Enajjachi Zakariaa).</span>
 
-  <span className="text-gray-300 text-center">You can read the code (<a href="https://github.com/zeeenku/best-chess-clock" className="underline text-amber-700">repo</a>)</span>
+  <span className="text-gray-300 text-center">You can read the code (<a href="https://github.com/zeeenku/best-chess-clock" className="underline text-semi-brown">repo</a>)</span>
 </div>
         </div>
 
