@@ -166,7 +166,7 @@ lg:max-h-full lg:overflow-y-auto ">
 
   <h1 className="block lg:hidden text-md sm:text-2xl font-bold mx-auto mt-8 mb-4 w-11/12 text-center">Play Chess with the #1 Chess Timer App!</h1>
 <h2 className="block lg:hidden text-sm  sm:text-xl text-semi-brown mx-auto mb-6 w-11/12 font-bold text-center"> <span>123,765,199</span> 
-<span className="text-xs  sm:text-lg italic text-center"> games played</span>
+<span className="text-xs sm:text-lg italic text-center"> games played</span>
 </h2>
 
   <div className="flex items-center justify-center my-3 lg:my-0 space-x-2">

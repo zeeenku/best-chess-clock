@@ -25,7 +25,7 @@ const ShareDialog: FC<Props>= ({url }) => {
                         style={{
                             root: {
                             backgroundColor: "transparent",
-                            fontFamily : "\"Arvo\", serif"
+                            fontFamily : "\"Arvo\", serif",
                             },
 
                             title : {
