@@ -136,27 +136,29 @@ const restoreGame = () => {}
         <>
         <div className="flex h-[100dvh] w-full flex-col lg:flex-row lg:space-x-20 lg:px-20 
         overflow-x-auto justify-center items-start  p-10">
-                    <div className="w-full flex justify-between items-center  h-screen
-                    flex-col lg:w-6/12 bg-slate-950 lg:top-0 lg:sticky lg:max-h-full lg:overflow-x-auto 
-                    p-5 lg:h-full rounded-lg">
+                    <div className="w-full lg:sticky flex flex-col justify-center items-center h-full lg:top-0
+                    lg:w-6/12 ">
+
+<div className=" bg-slate-950 w-full
+                    py-3 px-8 rounded-lg   h-fit
+lg:max-h-full lg:overflow-y-auto ">
 
 
-
-  <Tabs defaultValue="home" className="w-full ">
-      <TabsList className='w-full text-slate-100 bg-slate-950 mb-5 justify-between'>
+  <Tabs defaultValue="home" className="w-full">
+      <TabsList className='w-full text-slate-100 bg-slate-950 justify-between'>
         
-      <div className="flex justify-center items-center">      
-              <img src="./logo.svg" className="w-12 me-4" width="2rem" height="2rem" />
+      <div className="flex justify-center text-sm items-center">      
+              <img src="./logo.svg" className="w-9 me-2" width="2rem" height="2rem" />
             Best Chess Clock</div>
 
         <div className='flex '>
-          <TabsTrigger value="home">Home</TabsTrigger>
-          <TabsTrigger value="history">History</TabsTrigger>
+          <TabsTrigger className="text-xs" value="home">Home</TabsTrigger>
+          <TabsTrigger className="text-xs" value="history">History</TabsTrigger>
         </div>
       </TabsList>
   
   
-  <TabsContent value="home" className='px-8'>
+  <TabsContent value="home" className="flex flex-col justify-around items-center">
     
 
 
@@ -172,16 +174,16 @@ const restoreGame = () => {}
       <CarouselContent >
         {(isSamePlayTime ? [players[0]] : players).map((player, id) => (
           <CarouselItem className='' key={id}>
-            <div className="p-1">
+            <div className={`${isSamePlayTime ? "p-1" : "px-7" }`}>
 
           {
           !isSamePlayTime ? (
-            <div className='flex justify-center mt-4 items-center space-x-4'> 
+            <div className='flex justify-center mt-4 space-x-4 items-center'> 
 
-              <CarouselPrevious className="relative text-slate-900 w-6 text-xs m-0 left-0 translate-x-0 translate-y-0 top-0 h-6" />
-              <h2 className="font-semibold text-md text-center">Player {id+1}</h2>
+              <CarouselPrevious className="relative text-slate-900 w-4 p-3 m-0 left-0 translate-x-0 translate-y-0 top-0 h-6" />
+              <h2 className="font-semibold text-sm text-center">Player {id+1}</h2>
 
-              <CarouselNext className="relative text-slate-900 w-6 text-xs m-0 left-0 translate-x-0 translate-y-0 top-0 h-6" />
+              <CarouselNext className="relative text-slate-900 w-4 p-3 m-0 left-0 translate-x-0 translate-y-0 top-0 h-6" />
             </div>
           ) : 
             <></>
@@ -236,13 +238,13 @@ const restoreGame = () => {}
 
   
           
-<div className="text-xs flex gap-1 justify-center">
-<span>&copy; made by <a href="https://dev.zeenku.com" className="underline text-semi-brown">Zenku</a> (Enajjachi Zakariaa).</span>
+<div className="text-xs flex gap-1 mt-2 justify-between">
+<span>Made by <a href="https://dev.zeenku.com" className="underline text-semi-brown">Zenku</a> (Enajjachi Zakariaa).</span>
 
-  <span className="text-gray-300 text-center">You can read the code (<a href="https://github.com/zeeenku/best-chess-clock" className="underline text-semi-brown">repo</a>)</span>
+  <span className="text-gray-300 text-center">&copy; 2025, Open Source Project (<a href="https://github.com/zeeenku/best-chess-clock" className="underline text-semi-brown">code</a>)</span>
 </div>
         </div>
-
+        </div>
 
         <div className="w-full lg:w-6/12">
         <InfoFaq/>
