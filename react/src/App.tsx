@@ -35,6 +35,7 @@ import './App.css'
 import Clock from './Clock'
 import { GamesHistory, Player } from './types'
 import InfoFaq from './InfoFaq'
+import ShareDialog from './ShareDialog'
 
 
 
@@ -253,51 +254,20 @@ const restoreGame = () => {}
       }
                     <div className="flex my-2 gap-x-2">
 
-                    <Button
-            onClick={()=>startGame()}
-            className="bg-amber-900 w-full hover:bg-amber-950 capitalize my-0">start game</Button>
+            <Button onClick={()=>startGame()}
+            className="bg-amber-900 w-full hover:bg-amber-950 capitalize my-0">start game
+            </Button>
 
 
           <div className="w-full">
-          <Button onClick={()=>{}} className="w-full bg-lime-900 hover:bg-lime-950">Download as App</Button>
+            <Button onClick={()=>{}} className="w-full bg-lime-900 hover:bg-lime-950">Download as App</Button>
           </div>
+
           <div className="w-full">
-          <Dialog>
-              <DialogTrigger asChild className="w-full">          
-                <Button className="w-full bg-lime-900 hover:bg-lime-950">Share With Friends</Button>
-              </DialogTrigger>
-              <DialogContent className="bg-slate-900">
-                <DialogHeader>
-                  <DialogTitle>Thanks for sharing</DialogTitle>
-                  <DialogDescription>
-                  <ShareSocial 
-                          url={url}
-
-                          style={{
-                            root: {
-                              backgroundColor: "transparent",
-                              fontFamily : "\"Arvo\", serif"
-                            },
-
-                            title : {
-                              textAlign : "center",
-                              color : "#e2e8f0",
-                              fontSize: "1rem",
-                              fontFamily : "\"Arvo\", serif"
-                            },
-                            copyContainer: {
-                              fontFamily : "\"Arvo\", serif",
-                              transform: "scale(0.8)"
-                            }
-                          }}
-
-                          socialTypes={["whatsapp","facebook","twitter","reddit","linkedin","instapaper"]}
-                        />
-                  </DialogDescription>
-                </DialogHeader>
-              </DialogContent>
-          </Dialog>
-          </div></div>
+            <ShareDialog url={url} />
+          </div>
+          
+        </div>
 </div>
           
 <div className="text-xs flex gap-1 justify-center">
